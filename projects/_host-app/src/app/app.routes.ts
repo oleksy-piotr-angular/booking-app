@@ -14,5 +14,14 @@ export const HOST_ROUTES: Routes = [
         exposedModule: './AuthRoutes', // matches your expose name
       }).then((m) => m.AUTH_ROUTES), // grabs the exported const from auth-mfe
   },
+  {
+    path: 'hotel/:id',
+    loadChildren: () =>
+      loadRemoteModule({
+        type: 'module',
+        remoteEntry: 'http://localhost:4202/remoteEntry.js',
+        exposedModule: './DetailsRoutes',
+      }).then((m) => m.DETAILS_ROUTES),
+  },
   { path: '**', component: NotFoundComponent },
 ];

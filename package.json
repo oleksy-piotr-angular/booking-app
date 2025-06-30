@@ -4,10 +4,13 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:auth-mfe": "ng serve auth-mfe",
+    "start:host-app": "ng serve host-app",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "api": "json-server --watch backend/db.json --port 3000"
+    "api": "json-server --watch backend/db.json --port 3000",
+    "run:all": "node node_modules/@angular-architects/module-federation/src/server/mf-dev-server.js"
   },
   "private": true,
   "dependencies": {
@@ -36,7 +39,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "ngx-build-plus": "^20.0.0",
+    "ngx-build-plus": "^17.0.0",
     "typescript": "~5.4.2"
   }
 }

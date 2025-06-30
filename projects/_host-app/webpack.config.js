@@ -1,20 +1,38 @@
-const { shareAll, withModuleFederationPlugin } = require('@angular-architects/module-federation/webpack');
+const {
+  withModuleFederationPlugin,
+  shareAll
+} = require('@angular-architects/module-federation/webpack');
 
-module.exports = withModuleFederationPlugin({
-  name: 'host-app',
-  
-  remotes: {
-    "authMfe": "http://localhost:4201/remoteEntry.js",    
+const mfConfig = require('./module-federation.config.js');
+
+module.exports = withModuleFederationPlugin(
+  //plugin-only options: name, library, exposes, etc.
+  {
+    ...mfConfig,
+    shared: {
+      ...shareAll({
+        singleton: true,
+        strictVersion: true,
+        requiredVersion: 'auto'
+      })
+    }
   },
 
-  experiments: { outputModule: true },
-  output: {
-    module: true,
-    scriptType: 'module'
-  },
+  //  factory to tweak the full Webpack config
+  (config) => {
+    // enable real ES-module output
+    config.experiments = {
+      ...(config.experiments || {}),
+      outputModule: true
+    };
 
-  shared: {
-    ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
-  },
+    // tell the HTML that this script is an ES module
+    config.output = {
+      ...config.output,
+      module: true,
+      scriptType: 'module'
+    };
 
-});
+    return config;
+  }
+);

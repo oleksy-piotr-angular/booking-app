@@ -1,17 +1,38 @@
-const { shareAll, withModuleFederationPlugin } = require('@angular-architects/module-federation/webpack');
-const mfConfig = require('./module-federation.config');
 
-module.exports = withModuleFederationPlugin({
+const {
+  withModuleFederationPlugin,
+  shareAll
+} = require('@angular-architects/module-federation/webpack');
 
-  ...mfConfig,
-  // This is needed for Angular 17+ to support module federation with ES modules
-  experiments: { outputModule: true },
-  output: {
-    module: true,
-    scriptType: 'module'
+const mfConfig = require('./module-federation.config.js');
+
+module.exports = withModuleFederationPlugin(
+  {
+    ...mfConfig,
+    shared: {
+      ...shareAll({
+        singleton: true,
+        strictVersion: true,
+        requiredVersion: 'auto'
+      })
+    }
   },
-  shared: {
-    ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
-  },
 
-});
+  //factory to tweak the full Webpack config
+  (config) => {
+    // enable real ES-module output
+    config.experiments = {
+      ...(config.experiments || {}),
+      outputModule: true
+    };
+
+    // tell the HTML that this script is an ES module
+    config.output = {
+      ...config.output,
+      module: true,
+      scriptType: 'module'
+    };
+
+    return config;
+  }
+);

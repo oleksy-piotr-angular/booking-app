@@ -1,0 +1,10 @@
+{
+  "users": [
+    { "id": 1, "username": "piotr", "password": "secret123" },
+    { "id": 2, "username": "admin", "password": "admin123" }
+  ],
+  "listings": [
+    { "id": 1, "title": "Seaside Cottage", "price": 220 },
+    { "id": 2, "title": "Mountain Cabin", "price": 180 }
+  ]
+}

@@ -1,7 +1,7 @@
 module.exports = {
   name: 'host-app',
   remotes: {
-    authMfe: 'auth-mfe@http://localhost:4201/remoteEntry.js',
-    detailsMfe: 'details-mfe@http://localhost:4202/remoteEntry.js',
+    authMfe: 'authMfe@http://localhost:4201/remoteEntry.js',
+    detailsMfe: 'detailsMfe@http://localhost:4202/remoteEntry.js',
   }
 };

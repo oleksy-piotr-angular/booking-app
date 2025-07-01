@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'auth-mfe',
+  name: 'authMfe',
   library: { type: 'module' },
   filename: 'remoteEntry.js',
   exposes: { './AuthRoutes': './projects/auth-mfe/src/app/auth.routes.ts' }

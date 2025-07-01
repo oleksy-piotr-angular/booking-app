@@ -7,6 +7,7 @@
     "start:auth-mfe": "ng serve auth-mfe",
     "start:host-app": "ng serve host-app",
     "start:details-mfe": "ng serve details-mfe",
+    "start:search-mfe": "ng serve search-mfe",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",

@@ -1,6 +1,6 @@
 module.exports = {
   name: 'detailsMfe',
   library: { type: 'module' },
-  filename: 'remoteEntry.js',
+  filename: 'detailsRemoteEntry.js',
   exposes: { './DetailsRoutes': './projects/details-mfe/src/app/details.routes.ts' }
 };

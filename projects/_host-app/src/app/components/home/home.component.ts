@@ -1,12 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MaterialModule } from '../../shared/material.module';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [MaterialModule],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
 })
 export class HomeComponent {
+  private snackBar: MatSnackBar = inject(MatSnackBar);
 
+  openSnackBar() {
+    this.snackBar.open('Hello from Angular Material!', 'Dismiss', {
+      duration: 3000,
+    });
+  }
 }

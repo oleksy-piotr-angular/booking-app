@@ -1,1 +1,17 @@
 <p>home works!</p>
+<!--to verify Angular Materials-->
+<form>
+  <mat-form-field appearance="fill">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" type="email" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Password</mat-label>
+    <input matInput formControlName="password" type="password" />
+  </mat-form-field>
+
+  <button mat-raised-button color="primary">Log in</button>
+</form>
+<button mat-raised-button (click)="openSnackBar()">Show Snackbar</button>
+<button mat-raised-button matTooltip="I animate too!">Hover me</button>

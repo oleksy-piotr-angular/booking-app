@@ -418,6 +418,110 @@
 					}
 				}
 			}
+		},
+		"listings-mfe": {
+			"projectType": "application",
+			"schematics": {
+				"@schematics/angular:component": {
+					"style": "scss"
+				}
+			},
+			"root": "projects/listings-mfe",
+			"sourceRoot": "projects/listings-mfe/src",
+			"prefix": "lm",
+			"architect": {
+				"build": {
+					"builder": "ngx-build-plus:browser",
+					"options": {
+						"outputPath": "dist/listings-mfe",
+						"index": "projects/listings-mfe/src/index.html",
+						"polyfills": [
+							"zone.js"
+						],
+						"tsConfig": "projects/listings-mfe/tsconfig.app.json",
+						"inlineStyleLanguage": "scss",
+						"assets": [
+							"projects/listings-mfe/src/favicon.ico",
+							"projects/listings-mfe/src/assets"
+						],
+						"styles": [
+							"projects/listings-mfe/src/styles.scss"
+						],
+						"scripts": [],
+						"main": "projects/listings-mfe/src/main.ts",
+						"extraWebpackConfig": "projects/listings-mfe/webpack.config.js",
+						"commonChunk": false
+					},
+					"configurations": {
+						"production": {
+							"budgets": [
+								{
+									"type": "initial",
+									"maximumWarning": "500kb",
+									"maximumError": "1mb"
+								},
+								{
+									"type": "anyComponentStyle",
+									"maximumWarning": "2kb",
+									"maximumError": "4kb"
+								}
+							],
+							"outputHashing": "all",
+							"extraWebpackConfig": "projects/listings-mfe/webpack.prod.config.js"
+						},
+						"development": {
+							"optimization": false,
+							"extractLicenses": false,
+							"sourceMap": true
+						}
+					},
+					"defaultConfiguration": "production"
+				},
+				"serve": {
+					"builder": "ngx-build-plus:dev-server",
+					"configurations": {
+						"production": {
+							"buildTarget": "listings-mfe:build:production",
+							"extraWebpackConfig": "projects/listings-mfe/webpack.prod.config.js"
+						},
+						"development": {
+							"buildTarget": "listings-mfe:build:development"
+						}
+					},
+					"defaultConfiguration": "development",
+					"options": {
+						"port": 4204,
+						"publicHost": "http://localhost:4204",
+						"extraWebpackConfig": "projects/listings-mfe/webpack.config.js"
+					}
+				},
+				"extract-i18n": {
+					"builder": "ngx-build-plus:extract-i18n",
+					"options": {
+						"buildTarget": "listings-mfe:build",
+						"extraWebpackConfig": "projects/listings-mfe/webpack.config.js"
+					}
+				},
+				"test": {
+					"builder": "@angular-devkit/build-angular:karma",
+					"options": {
+						"polyfills": [
+							"zone.js",
+							"zone.js/testing"
+						],
+						"tsConfig": "projects/listings-mfe/tsconfig.spec.json",
+						"inlineStyleLanguage": "scss",
+						"assets": [
+							"projects/listings-mfe/src/favicon.ico",
+							"projects/listings-mfe/src/assets"
+						],
+						"styles": [
+							"projects/listings-mfe/src/styles.scss"
+						],
+						"scripts": []
+					}
+				}
+			}
 		}
 	}
 }

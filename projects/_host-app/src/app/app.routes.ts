@@ -32,5 +32,14 @@ export const HOST_ROUTES: Routes = [
         exposedModule: './DetailsRoutes',
       }).then((m) => m.DETAILS_ROUTES),
   },
+  {
+    path: 'listings',
+    loadChildren: () =>
+      loadRemoteModule({
+        type: 'module',
+        remoteEntry: 'http://localhost:4204/listingsRemoteEntry.js',
+        exposedModule: './ListingsRoutes',
+      }).then((m) => m.LISTINGS_ROUTES),
+  },
   { path: '**', component: NotFoundComponent },
 ];

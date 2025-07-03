@@ -19,6 +19,7 @@ export interface FormFieldConfig {
 })
 export class DynamicFormComponent implements OnInit {
   @Input() config: FormFieldConfig[] = [];
+  @Input() errorMessages: { [key: string]: string } = {};
   @Input() submitLabel = 'Submit';
   @Output() submitted = new EventEmitter<any>();
 

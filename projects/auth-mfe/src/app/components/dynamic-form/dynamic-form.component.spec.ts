@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormControlName } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '../../shared/material.module';
+import { By } from '@angular/platform-browser';
 import {
   DynamicFormComponent,
   FormFieldConfig,
@@ -44,8 +45,14 @@ describe('DynamicFormComponent', () => {
 
   it('should render inputs for each config entry', () => {
     const el: HTMLElement = fixture.nativeElement;
-    expect(el.querySelector('input[formControlName="email"]')).toBeTruthy();
-    expect(el.querySelector('input[formControlName="password"]')).toBeTruthy();
+    const controls = fixture.debugElement.queryAll(
+      By.directive(FormControlName)
+    );
+
+    expect(controls.length).toBe(2);
+
+    expect(el.querySelector('input[ng-reflect-name="email"]')).toBeTruthy();
+    expect(el.querySelector('input[ng-reflect-name="password"]')).toBeTruthy();
   });
 
   it('should render a submit button with default label', () => {

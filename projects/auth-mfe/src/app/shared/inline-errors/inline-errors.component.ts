@@ -1,21 +1,12 @@
-import { Component, Input } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { MaterialModule } from '../material.module';
+import { Component } from '@angular/core';
+
 @Component({
   selector: 'am-inline-errors',
   standalone: true,
-  imports: [CommonModule, MaterialModule],
-  template: `
-    <ng-container *ngIf="control?.errors as errs">
-      <mat-error *ngFor="let key of objectKeys(errs)">
-        {{ errorMessages[key] || key }}
-      </mat-error>
-    </ng-container>
-  `,
+  imports: [],
+  templateUrl: './inline-errors.component.html',
+  styleUrl: './inline-errors.component.scss'
 })
 export class InlineErrorsComponent {
-  @Input() control!: AbstractControl;
-  @Input() errorMessages: Record<string, string> = {};
-  objectKeys = Object.keys;
+
 }

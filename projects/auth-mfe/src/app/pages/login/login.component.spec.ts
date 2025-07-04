@@ -1,12 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter, Router } from '@angular/router';
 import { of } from 'rxjs';
 
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 import { LoginComponent } from './login.component';
 import { AuthService, LoginPayload } from '../../services/auth/auth.service';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideLocationMocks } from '@angular/common/testing';
 
 describe('LoginComponent', () => {
   let fixture: ComponentFixture<LoginComponent>;
@@ -18,10 +19,12 @@ describe('LoginComponent', () => {
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
-      imports: [LoginComponent, RouterTestingModule],
+      imports: [LoginComponent, NoopAnimationsModule],
       providers: [
         { provide: AuthService, useValue: authSpy },
         { provide: Router, useValue: routerSpy },
+        provideRouter([]), // 👈 your test routes here
+        provideLocationMocks, // 👈 mocks Location & LocationStrategy
       ],
     }).compileComponents();
 

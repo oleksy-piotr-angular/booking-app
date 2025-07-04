@@ -17,15 +17,6 @@ import { AuthService, LoginPayload } from '../../services/auth/auth.service';
       (submitted)="onSubmit($event)"
     >
     </am-dynamic-form>
-    <div class="error-zone" role="alert">
-      @if(errorMsg){
-
-      <div class="error-message mat-error">
-        {{ errorMsg }}
-      </div>
-
-      }
-    </div>
   `,
 })
 export class LoginComponent {

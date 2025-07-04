@@ -20,13 +20,17 @@ import { AuthService, RegisterPayload } from '../../services/auth.service';
   template: `
     <am-dynamic-form
       [config]="config"
+      [errorMessages]="errorMessages"
       submitLabel="Register"
       (submitted)="onSubmit($event)"
     ></am-dynamic-form>
+    <mat-error *ngIf="mismatchError">
+      Passwords do not match. Please try again.
+    </mat-error>
   `,
 })
 export class RegisterComponent {
-  config: FormFieldConfig[] = [
+  public config: FormFieldConfig[] = [
     {
       name: 'email',
       type: 'email',
@@ -44,16 +48,32 @@ export class RegisterComponent {
       type: 'password',
       label: 'Confirm Password',
       validators: [Validators.required],
+      confirmField: 'password', // ← tell dynamic‐form to match these two
     },
   ];
 
+  public mismatchError = false;
+  public errorMessages = {
+    required: 'This field is required.',
+    passwordMismatch: 'Passwords do not match. Please try again.',
+  };
+
   constructor(private auth: AuthService) {}
 
-  onSubmit(value: any) {
-    // strip out confirmPassword
-    const { confirmPassword, ...payload } = value as RegisterPayload & {
-      confirmPassword: string;
-    };
+  public onSubmit(value: any): void {
+    const { password, confirmPassword, ...rest } = value as any;
+
+    // 1) guard mismatch
+    if (password !== confirmPassword) {
+      this.mismatchError = true;
+      return;
+    }
+
+    // 2) clear any prior error
+    this.mismatchError = false;
+
+    // 3) call the API
+    const payload = { password, ...rest };
     this.auth.register(payload).subscribe();
   }
 }

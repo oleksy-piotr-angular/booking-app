@@ -8,6 +8,7 @@ import { LoginComponent } from './login.component';
 import { AuthService, LoginPayload } from '../../services/auth/auth.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideLocationMocks } from '@angular/common/testing';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 describe('LoginComponent', () => {
   let fixture: ComponentFixture<LoginComponent>;
@@ -75,10 +76,11 @@ describe('LoginComponent', () => {
       By.directive(DynamicFormComponent)
     ).componentInstance;
 
-    // simulate invalid email field (client-side error already present)
-    dyn.form = {
-      get: () => ({ errors: { required: true } }),
-    } as any;
+    // Instead of mocking the form, we can directly set it up
+    dyn.form = new FormGroup({
+      email: new FormControl('', Validators.required),
+      password: new FormControl('', Validators.required),
+    });
 
     authSpy.login.and.returnValue(
       throwError(() => ({ error: { message: 'Invalid credentials' } }))

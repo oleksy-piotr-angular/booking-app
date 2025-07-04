@@ -85,9 +85,10 @@ describe('RegisterComponent', () => {
     // simulate submission; form builder will mark all touched
     dynCmp.form.setValue({
       email: 'x@y.com',
-      password: '1',
-      confirmPassword: '2',
+      password: '123456', // valid length
+      confirmPassword: '654321', // same length but not equal
     });
+
     dynCmp.form.markAllAsTouched();
     fixture.detectChanges();
     await fixture.whenStable();

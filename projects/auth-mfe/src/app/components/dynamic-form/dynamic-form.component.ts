@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../shared/material.module';
 import { InlineErrorsComponent } from '../../shared/inline-errors/inline-errors.component';
+import { passwordsMatchValidator } from '../../shared/Validators/passwords-match.validator';
 
 export interface FormFieldConfig {
   name: string;
@@ -18,6 +19,8 @@ export interface FormFieldConfig {
   label: string;
   placeholder?: string;
   validators?: any[];
+  // ← new, optional: the name of the field this one must match
+  confirmField?: string;
 }
 
 @Component({
@@ -57,7 +60,18 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     this.config.forEach((f) => {
       group[f.name] = ['', f.validators || []];
     });
+
+    // 1) create the FormGroup
     this.form = this.fb.group(group);
+
+    // 2) attach any cross‐field validators
+    this.config.forEach((f) => {
+      if (f.confirmField) {
+        this.form.addValidators(
+          passwordsMatchValidator(f.confirmField, f.name)
+        );
+      }
+    });
   }
 
   onSubmit() {

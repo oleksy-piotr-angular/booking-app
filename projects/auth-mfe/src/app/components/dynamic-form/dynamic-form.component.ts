@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../shared/material.module';
 import { InlineErrorsComponent } from '../../shared/inline-errors/inline-errors.component';
-import { passwordsMatchValidator } from '../../shared/Validators/passwords-match.validator';
+import { passwordsMatchValidator } from '../../shared/Validators/password-match/passwords-match.validator';
 
 export interface FormFieldConfig {
   name: string;

@@ -1,4 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideRouter, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
@@ -9,6 +14,7 @@ import { AuthService, LoginPayload } from '../../services/auth/auth.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideLocationMocks } from '@angular/common/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormErrorComponent } from '../../components/form-error/form-error.component';
 
 describe('LoginComponent', () => {
   let fixture: ComponentFixture<LoginComponent>;
@@ -20,7 +26,7 @@ describe('LoginComponent', () => {
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
-      imports: [LoginComponent, NoopAnimationsModule],
+      imports: [LoginComponent, NoopAnimationsModule, FormErrorComponent],
       providers: [
         { provide: AuthService, useValue: authSpy },
         { provide: Router, useValue: routerSpy },
@@ -53,7 +59,7 @@ describe('LoginComponent', () => {
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/dashboard']);
   });
 
-  it('displays an error message when login fails', () => {
+  it('displays an error message when login fails', fakeAsync(() => {
     const dyn = fixture.debugElement.query(
       By.directive(DynamicFormComponent)
     ).componentInstance;
@@ -63,13 +69,18 @@ describe('LoginComponent', () => {
     );
 
     dyn.submitted.emit({ email: 'user@test.com', password: 'badpass' });
-    fixture.detectChanges();
 
-    const errEl = fixture.debugElement.query(By.css('.error-message'))
-      ?.nativeElement as HTMLElement;
+    tick(); // Wait for observable error to be handled
+    fixture.detectChanges(); // ✅ Now the DOM reflects errorMsg binding
 
-    expect(errEl?.textContent).toContain('Invalid credentials');
-  });
+    const formErrorDE = fixture.debugElement.query(
+      By.directive(FormErrorComponent)
+    );
+    expect(formErrorDE).not.toBeNull();
+
+    const cmp = formErrorDE.componentInstance as FormErrorComponent;
+    expect(cmp.message).toBe('Invalid credentials');
+  }));
 
   it('shows server error and leaves validation errors visible', () => {
     const dyn = fixture.debugElement.query(
@@ -89,9 +100,12 @@ describe('LoginComponent', () => {
     dyn.submitted.emit({ email: '', password: 'badpass' });
     fixture.detectChanges();
 
-    const errEl = fixture.debugElement.query(By.css('.error-message'))
-      ?.nativeElement as HTMLElement;
+    const formErrorDE = fixture.debugElement.query(
+      By.directive(FormErrorComponent)
+    );
+    expect(formErrorDE).not.toBeNull();
 
-    expect(errEl?.textContent).toContain('Invalid credentials');
+    const formErrorCmp = formErrorDE.componentInstance as FormErrorComponent;
+    expect(formErrorCmp.message).toBe('Invalid credentials');
   });
 });

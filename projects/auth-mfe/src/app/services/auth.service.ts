@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface RegisterPayload {
@@ -7,11 +7,12 @@ export interface RegisterPayload {
   password: string;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
+  private baseUrl = '/api';
+  private http: HttpClient = inject(HttpClient);
+
   register(payload: RegisterPayload): Observable<any> {
-    return new Observable((observer) => {});
+    return this.http.post<any>(`${this.baseUrl}/register`, payload);
   }
 }

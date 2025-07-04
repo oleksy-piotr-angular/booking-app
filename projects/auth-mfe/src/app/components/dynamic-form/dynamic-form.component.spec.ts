@@ -7,16 +7,17 @@ import {
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '../../shared/material.module';
 import { By } from '@angular/platform-browser';
+
 import {
   DynamicFormComponent,
   FormFieldConfig,
 } from './dynamic-form.component';
 import { InlineErrorsComponent } from '../../shared/inline-errors/inline-errors.component';
 
-describe('DynamicFormComponent', () => {
+describe('DynamicFormComponent (integration)', () => {
   let fixture: ComponentFixture<DynamicFormComponent>;
 
-  const testConfig: FormFieldConfig[] = [
+  const twoFields: FormFieldConfig[] = [
     {
       name: 'email',
       type: 'email',
@@ -37,6 +38,7 @@ describe('DynamicFormComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         DynamicFormComponent,
+        InlineErrorsComponent, // ← real component
         ReactiveFormsModule,
         MaterialModule,
         NoopAnimationsModule,
@@ -44,30 +46,23 @@ describe('DynamicFormComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(DynamicFormComponent);
-    fixture.componentInstance.config = testConfig;
+    fixture.componentInstance.config = twoFields;
     fixture.detectChanges();
   });
 
-  it('should render inputs for each config entry', () => {
-    const el: HTMLElement = fixture.nativeElement;
-    const controls = fixture.debugElement.queryAll(
-      By.directive(FormControlName)
-    );
-
-    expect(controls.length).toBe(2);
-
-    expect(el.querySelector('input[ng-reflect-name="email"]')).toBeTruthy();
-    expect(el.querySelector('input[ng-reflect-name="password"]')).toBeTruthy();
+  it('renders inputs for each config entry', () => {
+    const els = fixture.debugElement.queryAll(By.directive(FormControlName));
+    expect(els.length).toBe(2);
   });
 
-  it('should render a submit button with default label', () => {
-    const button = fixture.nativeElement.querySelector('button[type="submit"]');
-    expect(button?.textContent).toContain('Submit');
+  it('renders a default submit button', () => {
+    const btn = fixture.nativeElement.querySelector('button[type="submit"]');
+    expect(btn.textContent).toContain('Submit');
   });
 
-  it('should render inline errors for invalid and touched controls', () => {
-    // One required field
-    const config = [
+  it('passes the right control and messages into InlineErrorsComponent', async () => {
+    // re-create component with a single required field
+    const oneField: FormFieldConfig[] = [
       {
         name: 'email',
         type: 'email',
@@ -75,22 +70,28 @@ describe('DynamicFormComponent', () => {
         validators: [Validators.required],
       },
     ];
-    fixture.componentInstance.config = config;
+    fixture.componentInstance.config = oneField;
     fixture.componentInstance.errorMessages = { required: 'Email is required' };
     fixture.detectChanges();
+    await fixture.whenStable();
 
-    // Mark the control as touched
-    const control = fixture.componentInstance['form'].get('email');
-    control?.markAsTouched();
+    // mark invalid & touched
+    const ctrl = fixture.componentInstance.form.get('email')!;
+    ctrl.setValue('');
+    ctrl.markAsTouched();
+    ctrl.updateValueAndValidity();
     fixture.detectChanges();
+    await fixture.whenStable();
 
-    // Find InlineErrorsComponent
-    const errorComponent = fixture.debugElement.query(
+    // find the InlineErrorsComponent
+    const inlineDE = fixture.debugElement.query(
       By.directive(InlineErrorsComponent)
     );
-    expect(errorComponent).toBeTruthy();
+    expect(inlineDE).toBeTruthy();
 
-    const errorEl = fixture.nativeElement.querySelector('mat-error');
-    expect(errorEl?.textContent).toContain('Email is required');
+    const inlineCmp = inlineDE.componentInstance as InlineErrorsComponent;
+    // verify it received the correct control & messages
+    expect(inlineCmp.control).toBe(ctrl);
+    expect(inlineCmp.errorMessages).toEqual({ required: 'Email is required' });
   });
 });

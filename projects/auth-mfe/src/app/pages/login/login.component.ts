@@ -5,11 +5,12 @@ import {
   FormFieldConfig,
 } from '../../components/dynamic-form/dynamic-form.component';
 import { AuthService, LoginPayload } from '../../services/auth/auth.service';
+import { FormErrorComponent } from '../../components/form-error/form-error.component';
 
 @Component({
   selector: 'am-login-form',
   standalone: true,
-  imports: [DynamicFormComponent],
+  imports: [DynamicFormComponent, FormErrorComponent],
   template: `
     <am-dynamic-form
       [config]="config"
@@ -17,6 +18,7 @@ import { AuthService, LoginPayload } from '../../services/auth/auth.service';
       (submitted)="onSubmit($event)"
     >
     </am-dynamic-form>
+    <am-form-error [message]="errorMsg"></am-form-error>
   `,
 })
 export class LoginComponent {

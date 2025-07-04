@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideRouter, Router } from '@angular/router';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 import { LoginComponent } from './login.component';
@@ -50,5 +50,23 @@ describe('LoginComponent', () => {
 
     expect(authSpy.login).toHaveBeenCalledWith(payload);
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/dashboard']);
+  });
+
+  it('displays an error message when login fails', () => {
+    const dyn = fixture.debugElement.query(
+      By.directive(DynamicFormComponent)
+    ).componentInstance;
+
+    authSpy.login.and.returnValue(
+      throwError(() => ({ error: { message: 'Invalid credentials' } }))
+    );
+
+    dyn.submitted.emit({ email: 'user@test.com', password: 'badpass' });
+    fixture.detectChanges();
+
+    const errEl = fixture.debugElement.query(By.css('.error-message'))
+      ?.nativeElement as HTMLElement;
+
+    expect(errEl?.textContent).toContain('Invalid credentials');
   });
 });

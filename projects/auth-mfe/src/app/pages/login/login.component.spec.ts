@@ -69,4 +69,27 @@ describe('LoginComponent', () => {
 
     expect(errEl?.textContent).toContain('Invalid credentials');
   });
+
+  it('shows server error and leaves validation errors visible', () => {
+    const dyn = fixture.debugElement.query(
+      By.directive(DynamicFormComponent)
+    ).componentInstance;
+
+    // simulate invalid email field (client-side error already present)
+    dyn.form = {
+      get: () => ({ errors: { required: true } }),
+    } as any;
+
+    authSpy.login.and.returnValue(
+      throwError(() => ({ error: { message: 'Invalid credentials' } }))
+    );
+
+    dyn.submitted.emit({ email: '', password: 'badpass' });
+    fixture.detectChanges();
+
+    const errEl = fixture.debugElement.query(By.css('.error-message'))
+      ?.nativeElement as HTMLElement;
+
+    expect(errEl?.textContent).toContain('Invalid credentials');
+  });
 });

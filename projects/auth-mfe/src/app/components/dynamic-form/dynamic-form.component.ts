@@ -1,7 +1,16 @@
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../shared/material.module';
+import { InlineErrorsComponent } from '../../shared/inline-errors/inline-errors.component';
 
 export interface FormFieldConfig {
   name: string;
@@ -14,13 +23,19 @@ export interface FormFieldConfig {
 @Component({
   selector: 'am-dynamic-form',
   standalone: true,
-  imports: [ReactiveFormsModule, MaterialModule, CommonModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MaterialModule,
+    InlineErrorsComponent,
+  ],
   templateUrl: './dynamic-form.component.html',
 })
-export class DynamicFormComponent implements OnInit {
+export class DynamicFormComponent implements OnInit, OnChanges {
   @Input() config: FormFieldConfig[] = [];
-  @Input() errorMessages: { [key: string]: string } = {};
   @Input() submitLabel = 'Submit';
+  @Input() errorMessages: Record<string, string> = {};
+
   @Output() submitted = new EventEmitter<any>();
 
   form!: FormGroup;
@@ -28,6 +43,16 @@ export class DynamicFormComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
+    this.buildForm();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['config'] && !changes['config'].firstChange) {
+      this.buildForm();
+    }
+  }
+
+  private buildForm() {
     const group: Record<string, any> = {};
     this.config.forEach((f) => {
       group[f.name] = ['', f.validators || []];

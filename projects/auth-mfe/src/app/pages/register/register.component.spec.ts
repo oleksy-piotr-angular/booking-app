@@ -55,4 +55,24 @@ describe('RegisterComponent', () => {
       password: 'secret1',
     });
   });
+
+  it('should not call AuthService.register() if passwords do not match', () => {
+    const el: HTMLElement = fixture.nativeElement;
+
+    // simulate mismatch
+    const bad = {
+      email: 'x@y.com',
+      password: 'abc123',
+      confirmPassword: 'xyz789',
+    };
+    // call the page-level onSubmit
+    fixture.componentInstance.onSubmit(bad);
+    fixture.detectChanges();
+
+    // register should NOT be called
+    expect(authSpy.register).not.toHaveBeenCalled();
+
+    // and we should see our mismatch error in the template
+    expect(el.textContent).toContain('Passwords do not match');
+  });
 });

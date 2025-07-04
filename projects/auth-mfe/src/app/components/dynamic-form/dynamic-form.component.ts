@@ -19,7 +19,6 @@ export interface FormFieldConfig {
   label: string;
   placeholder?: string;
   validators?: any[];
-  // ← new, optional: the name of the field this one must match
   confirmField?: string;
 }
 
@@ -35,36 +34,34 @@ export interface FormFieldConfig {
   templateUrl: './dynamic-form.component.html',
 })
 export class DynamicFormComponent implements OnInit, OnChanges {
-  @Input() config: FormFieldConfig[] = [];
-  @Input() submitLabel = 'Submit';
-  @Input() errorMessages: Record<string, string> = {};
+  @Input() public config: FormFieldConfig[] = [];
+  @Input() public submitLabel = 'Submit';
+  @Input() public errorMessages: Record<string, string> = {};
 
-  @Output() submitted = new EventEmitter<any>();
+  @Output() public submitted = new EventEmitter<any>();
 
-  form!: FormGroup;
+  public form!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  public constructor(private fb: FormBuilder) {}
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.buildForm();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  public ngOnChanges(changes: SimpleChanges): void {
     if (changes['config'] && !changes['config'].firstChange) {
       this.buildForm();
     }
   }
 
-  private buildForm() {
+  private buildForm(): void {
     const group: Record<string, any> = {};
     this.config.forEach((f) => {
       group[f.name] = ['', f.validators || []];
     });
 
-    // 1) create the FormGroup
     this.form = this.fb.group(group);
 
-    // 2) attach any cross‐field validators
     this.config.forEach((f) => {
       if (f.confirmField) {
         this.form.addValidators(
@@ -74,7 +71,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     });
   }
 
-  onSubmit() {
+  public onSubmit(): void {
     this.form.markAllAsTouched();
     if (this.form.valid) {
       this.submitted.emit(this.form.value);

@@ -12,7 +12,7 @@ import { MaterialModule } from '../../shared/material.module';
 export class HomeComponent {
   private snackBar: MatSnackBar = inject(MatSnackBar);
 
-  openSnackBar() {
+  public openSnackBar(): void {
     this.snackBar.open('Hello from Angular Material!', 'Dismiss', {
       duration: 3000,
     });

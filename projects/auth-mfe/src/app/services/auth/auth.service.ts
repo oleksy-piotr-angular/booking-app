@@ -16,11 +16,11 @@ export class AuthService {
   private baseUrl = '/api';
   private http: HttpClient = inject(HttpClient);
 
-  register(payload: RegisterPayload): Observable<any> {
+  public register(payload: RegisterPayload): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/register`, payload);
   }
 
-  login(payload: LoginPayload): Observable<{ token: string }> {
+  public login(payload: LoginPayload): Observable<{ token: string }> {
     return this.http.post<{ token: string }>(`${this.baseUrl}/login`, payload);
   }
 }

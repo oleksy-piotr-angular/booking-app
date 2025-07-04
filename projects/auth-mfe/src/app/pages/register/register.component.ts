@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { MaterialModule } from '../../shared/material.module';
@@ -48,7 +48,7 @@ export class RegisterComponent {
       type: 'password',
       label: 'Confirm Password',
       validators: [Validators.required],
-      confirmField: 'password', // ← tell dynamic‐form to match these two
+      confirmField: 'password',
     },
   ];
 
@@ -58,21 +58,18 @@ export class RegisterComponent {
     passwordMismatch: 'Passwords do not match. Please try again.',
   };
 
-  constructor(private auth: AuthService) {}
+  private auth: AuthService = inject(AuthService);
 
   public onSubmit(value: any): void {
     const { password, confirmPassword, ...rest } = value as any;
 
-    // 1) guard mismatch
     if (password !== confirmPassword) {
       this.mismatchError = true;
       return;
     }
 
-    // 2) clear any prior error
     this.mismatchError = false;
 
-    // 3) call the API
     const payload = { password, ...rest };
     this.auth.register(payload).subscribe();
   }

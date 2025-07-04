@@ -13,10 +13,10 @@ import { MaterialModule } from '../material.module';
     } }`,
 })
 export class InlineErrorsComponent {
-  @Input() control!: AbstractControl;
-  @Input() errorMessages: Record<string, string> = {};
+  @Input() public control!: AbstractControl;
+  @Input() public errorMessages: Record<string, string> = {};
 
-  objectKeys(errors: Record<string, any> | null): string[] {
+  public objectKeys(errors: Record<string, any> | null): string[] {
     return errors ? Object.keys(errors) : [];
   }
 }

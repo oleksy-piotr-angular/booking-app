@@ -5,6 +5,8 @@ const TOKEN_KEY = 'auth.token';
 
 @Injectable({ providedIn: 'root' })
 export class TokenService {
+  public constructor() {}
+
   public getToken(): string | null {
     const token = localStorage.getItem(TOKEN_KEY);
     if (!token) {
@@ -12,7 +14,6 @@ export class TokenService {
     }
 
     const parts = token.split('.');
-    // Only treat as JWT if it has three segments
     if (parts.length === 3 && isTokenExpired(token)) {
       this.clearToken();
       return null;

@@ -11,5 +11,5 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ListingsComponent {
   private route = inject(ActivatedRoute);
-  query = this.route.snapshot.queryParams['q'] || '';
+  public query: string = this.route.snapshot.queryParams['q'] || '';
 }

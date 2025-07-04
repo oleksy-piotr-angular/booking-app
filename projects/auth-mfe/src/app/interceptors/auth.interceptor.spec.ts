@@ -38,10 +38,7 @@ describe('authInterceptor (function)', () => {
   it('adds Authorization header with token', () => {
     http.get('/test').subscribe();
     const req = httpMock.expectOne((r) => r.url.endsWith('/test'));
-    httpMock.match((req) => {
-      console.log('Intercepted:', req.url);
-      return false; // don’t match anything
-    });
+
     expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
     req.flush({});
   });

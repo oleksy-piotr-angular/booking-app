@@ -75,4 +75,25 @@ describe('RegisterComponent', () => {
     // and we should see our mismatch error in the template
     expect(el.textContent).toContain('Passwords do not match');
   });
+
+  it('should show passwordMismatch error under confirmPassword', async () => {
+    const dynDE = fixture.debugElement.query(
+      By.directive(DynamicFormComponent)
+    );
+    const dynCmp = dynDE.componentInstance as DynamicFormComponent;
+
+    // simulate submission; form builder will mark all touched
+    dynCmp.form.setValue({
+      email: 'x@y.com',
+      password: '1',
+      confirmPassword: '2',
+    });
+    dynCmp.form.markAllAsTouched();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    // confirm the mat-error appears
+    const msg = fixture.nativeElement.querySelector('mat-error').textContent;
+    expect(msg).toContain('Passwords do not match');
+  });
 });

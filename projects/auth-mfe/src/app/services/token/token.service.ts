@@ -1,18 +1,31 @@
 import { Injectable } from '@angular/core';
+import { isTokenExpired } from '../../shared/utils/jwt.util';
 
 const TOKEN_KEY = 'auth.token';
 
 @Injectable({ providedIn: 'root' })
 export class TokenService {
-  getToken(): string | null {
-    return localStorage.getItem(TOKEN_KEY);
+  public getToken(): string | null {
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (!token) {
+      return null;
+    }
+
+    const parts = token.split('.');
+    // Only treat as JWT if it has three segments
+    if (parts.length === 3 && isTokenExpired(token)) {
+      this.clearToken();
+      return null;
+    }
+
+    return token;
   }
 
-  setToken(token: string): void {
+  public setToken(token: string): void {
     localStorage.setItem(TOKEN_KEY, token);
   }
 
-  clearToken(): void {
+  public clearToken(): void {
     localStorage.removeItem(TOKEN_KEY);
   }
 }

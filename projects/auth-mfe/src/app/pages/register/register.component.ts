@@ -7,6 +7,7 @@ import {
   FormFieldConfig,
 } from '../../components/dynamic-form/dynamic-form.component';
 import { AuthService, RegisterPayload } from '../../services/auth/auth.service';
+import { FormErrorComponent } from '../../components/form-error/form-error.component';
 
 @Component({
   selector: 'am-register-form',
@@ -16,6 +17,7 @@ import { AuthService, RegisterPayload } from '../../services/auth/auth.service';
     ReactiveFormsModule,
     MaterialModule,
     DynamicFormComponent,
+    FormErrorComponent,
   ],
   template: `
     <am-dynamic-form
@@ -24,9 +26,8 @@ import { AuthService, RegisterPayload } from '../../services/auth/auth.service';
       submitLabel="Register"
       (submitted)="onSubmit($event)"
     ></am-dynamic-form>
-    <mat-error *ngIf="mismatchError">
-      Passwords do not match. Please try again.
-    </mat-error>
+
+    <am-form-error [message]="errorMsg"></am-form-error>
   `,
 })
 export class RegisterComponent {
@@ -53,24 +54,37 @@ export class RegisterComponent {
   ];
 
   public mismatchError = false;
+  public errorMsg: string | null = null;
+
   public errorMessages = {
     required: 'This field is required.',
     passwordMismatch: 'Passwords do not match. Please try again.',
   };
 
-  private auth: AuthService = inject(AuthService);
+  private readonly auth = inject(AuthService);
 
   public onSubmit(value: any): void {
-    const { password, confirmPassword, ...rest } = value as any;
+    const { password, confirmPassword, ...rest } = value;
 
     if (password !== confirmPassword) {
       this.mismatchError = true;
+      this.errorMsg = 'Passwords do not match. Please try again.';
       return;
     }
 
     this.mismatchError = false;
+    this.errorMsg = null;
 
-    const payload = { password, ...rest };
-    this.auth.register(payload).subscribe();
+    const payload: RegisterPayload = { password, ...rest };
+
+    this.auth.register(payload).subscribe({
+      next: () => {
+        // success logic here (redirect, toast, reset, etc.)
+      },
+      error: (err) => {
+        this.errorMsg =
+          err.error?.message || 'Registration failed. Please try again.';
+      },
+    });
   }
 }

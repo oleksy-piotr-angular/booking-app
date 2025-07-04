@@ -6,7 +6,7 @@ import {
   DynamicFormComponent,
   FormFieldConfig,
 } from '../../components/dynamic-form/dynamic-form.component';
-import { AuthService, RegisterPayload } from '../../services/auth.service';
+import { AuthService, RegisterPayload } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'am-register-form',

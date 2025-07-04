@@ -6,7 +6,7 @@ import { MaterialModule } from '../../shared/material.module';
 
 import { RegisterComponent } from './register.component';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { of } from 'rxjs';
 
 describe('RegisterComponent', () => {

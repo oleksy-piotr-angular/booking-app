@@ -25,4 +25,16 @@ describe('TokenService', () => {
     service.clearToken();
     expect(service.getToken()).toBeNull();
   });
+
+  it('should clear and return null if token is expired', () => {
+    const expiredPayload = { exp: Math.floor(Date.now() / 1000) - 100 };
+    const expiredToken = `header.${btoa(JSON.stringify(expiredPayload))}.sig`;
+
+    localStorage.setItem('auth.token', expiredToken);
+
+    const result = service.getToken();
+
+    expect(result).toBeNull();
+    expect(localStorage.getItem('auth.token')).toBeNull(); // ensures it's cleared
+  });
 });

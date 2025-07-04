@@ -37,4 +37,19 @@ describe('AuthService', () => {
 
     expect(actual).toEqual(mockResp);
   });
+
+  it('should post to /api/login and return the token response', () => {
+    const payload = { email: 'test@example.com', password: 'secret' };
+    const mockResp = { token: 'abc.def.ghi' };
+    let actual: any;
+
+    service.login(payload).subscribe((r) => (actual = r));
+
+    const req = httpMock.expectOne('/api/login');
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(payload);
+
+    req.flush(mockResp);
+    expect(actual).toEqual(mockResp);
+  });
 });

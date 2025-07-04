@@ -15,4 +15,10 @@ export class AuthService {
   register(payload: RegisterPayload): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/register`, payload);
   }
+
+  login(payload: RegisterPayload): Observable<any> {
+    return new Observable(() => {
+      // Simulate a login request
+    });
+  }
 }

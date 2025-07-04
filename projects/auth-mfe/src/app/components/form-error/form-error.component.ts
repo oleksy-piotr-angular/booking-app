@@ -1,10 +1,15 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-form-error',
+  selector: 'am-form-error',
   standalone: true,
-  imports: [],
-  template: ``,
+  template: `
+    @if(message){
+    <div class="error-message mat-error" role="alert">
+      {{ message }}
+    </div>
+    }
+  `,
 })
 export class FormErrorComponent {
   @Input() message: string | null = null;

@@ -36,7 +36,7 @@ describe('ForgotPasswordComponent', () => {
   });
 
   it('calls AuthService.forgotPassword and shows success message', fakeAsync(() => {
-    authSpy.forgotPassword.and.returnValue(of(undefined));
+    authSpy.forgotPassword.and.returnValue(of({}));
 
     const dyn = fixture.debugElement.query(By.directive(DynamicFormComponent))
       .componentInstance as DynamicFormComponent;

@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 
 export interface RegisterPayload {
   email: string;
@@ -15,8 +15,12 @@ export interface LoginPayload {
 export class AuthService {
   private baseUrl = '/api';
   private http: HttpClient = inject(HttpClient);
-  public readonly isAuthenticated$ = new Observable<boolean>(
-    (subscriber) => {}
+  private readonly tokenSubject = new BehaviorSubject<string | null>(
+    localStorage.getItem('auth_token')
+  );
+
+  public readonly isAuthenticated$ = this.tokenSubject.pipe(
+    map((token) => !!token)
   );
 
   public register(payload: RegisterPayload): Observable<any> {
@@ -36,5 +40,15 @@ export class AuthService {
       token,
       password,
     });
+  }
+
+  // Add a method to mutate the token
+  public setToken(token: string | null): void {
+    if (token) {
+      localStorage.setItem('auth_token', token);
+    } else {
+      localStorage.removeItem('auth_token');
+    }
+    this.tokenSubject.next(token);
   }
 }

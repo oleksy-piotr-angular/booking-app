@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { TokenService } from './token.service';
 
-describe('TokenService', () => {
+describe('TokenService (TDD)', () => {
   let service: TokenService;
 
   // a helper valid JWT with exp 1 hour in the future

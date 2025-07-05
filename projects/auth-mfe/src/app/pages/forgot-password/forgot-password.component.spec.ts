@@ -24,7 +24,7 @@ function getFormErrorComp(fixture: ComponentFixture<ForgotPasswordComponent>) {
     .componentInstance as FormErrorComponent;
 }
 
-describe('ForgotPasswordComponent', () => {
+describe('ForgotPasswordComponent (TDD)', () => {
   let fixture: ComponentFixture<ForgotPasswordComponent>;
   let authSpy: jasmine.SpyObj<AuthService>;
 

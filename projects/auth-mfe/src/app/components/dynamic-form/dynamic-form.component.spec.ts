@@ -14,7 +14,7 @@ import {
 } from './dynamic-form.component';
 import { InlineErrorsComponent } from '../../shared/inline-errors/inline-errors.component';
 
-describe('DynamicFormComponent (integration)', () => {
+describe('DynamicFormComponent (integration) [TDD]', () => {
   let fixture: ComponentFixture<DynamicFormComponent>;
 
   const twoFields: FormFieldConfig[] = [

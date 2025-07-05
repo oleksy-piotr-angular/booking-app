@@ -1,6 +1,6 @@
 import { isTokenExpired } from './jwt.util';
 
-describe('isTokenExpired', () => {
+describe('isTokenExpired (TDD)', () => {
   const future = () => Math.floor(Date.now() / 1000) + 3600;
   const past = () => Math.floor(Date.now() / 1000) - 3600;
 

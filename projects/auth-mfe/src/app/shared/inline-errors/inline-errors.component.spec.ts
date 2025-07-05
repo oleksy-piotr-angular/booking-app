@@ -4,7 +4,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('InlineErrorsComponent', () => {
+describe('InlineErrorsComponent (TDD)', () => {
   let fixture: ComponentFixture<InlineErrorsComponent>;
 
   beforeEach(async () => {

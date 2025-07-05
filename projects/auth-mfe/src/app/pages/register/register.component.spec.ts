@@ -9,7 +9,7 @@ import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form
 import { AuthService } from '../../services/auth/auth.service';
 import { of } from 'rxjs';
 
-describe('RegisterComponent', () => {
+describe('RegisterComponent (TDD)', () => {
   let fixture: ComponentFixture<RegisterComponent>;
   let component: RegisterComponent;
   let authSpy: jasmine.SpyObj<AuthService>;

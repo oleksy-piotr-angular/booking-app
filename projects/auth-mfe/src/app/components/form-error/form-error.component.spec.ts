@@ -47,4 +47,20 @@ describe('FormErrorComponent', () => {
     expect(liElements[0].textContent).toContain('Invalid email');
     expect(liElements[1].textContent).toContain('Password too short');
   });
+
+  it('deduplicates identical messages before rendering', () => {
+    fixture.componentInstance.messages = [
+      'Invalid email',
+      'Invalid email',
+      'Password too short',
+    ];
+    fixture.detectChanges();
+
+    const liElements = fixture.nativeElement.querySelectorAll('li');
+    const texts = Array.from(liElements).map((el) =>
+      (el as HTMLElement).textContent?.trim()
+    );
+
+    expect(texts).toEqual(['Invalid email', 'Password too short']);
+  });
 });

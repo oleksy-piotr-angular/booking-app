@@ -13,6 +13,17 @@ import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form
 import { FormErrorComponent } from '../../components/form-error/form-error.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+// ─── Test Helpers ───────────────────────────────────────────────────────────
+function getFormComp(fixture: ComponentFixture<ForgotPasswordComponent>) {
+  return fixture.debugElement.query(By.directive(DynamicFormComponent))
+    .componentInstance as DynamicFormComponent;
+}
+
+function getErrorComp(fixture: ComponentFixture<ForgotPasswordComponent>) {
+  return fixture.debugElement.query(By.directive(FormErrorComponent))
+    .componentInstance as FormErrorComponent;
+}
+
 describe('ForgotPasswordComponent', () => {
   let fixture: ComponentFixture<ForgotPasswordComponent>;
   let authSpy: jasmine.SpyObj<AuthService>;
@@ -34,8 +45,7 @@ describe('ForgotPasswordComponent', () => {
 
   it('renders DynamicFormComponent with email field only', () => {
     // initial detectChanges() has already rendered the form
-    const form = fixture.debugElement.query(By.directive(DynamicFormComponent))
-      .componentInstance as DynamicFormComponent;
+    const form = getFormComp(fixture);
 
     expect(form.config.length).toBe(1);
     expect(form.config[0].name).toBe('email');
@@ -45,20 +55,16 @@ describe('ForgotPasswordComponent', () => {
     authSpy.forgotPassword.and.returnValue(of({}));
 
     // initial detectChanges() has already rendered the form
-    const dyn = fixture.debugElement.query(By.directive(DynamicFormComponent))
-      .componentInstance as DynamicFormComponent;
+    const dyn = getFormComp(fixture);
 
     dyn.submitted.emit({ email: 'user@example.com' });
     tick();
     fixture.detectChanges();
 
-    const formError = fixture.debugElement.query(
-      By.directive(FormErrorComponent)
-    );
+    const formError = getErrorComp(fixture);
+
     expect(formError).not.toBeNull();
-    expect((formError.componentInstance as FormErrorComponent).message).toBe(
-      'Password reset email sent.'
-    );
+    expect(formError.message).toBe('Password reset email sent.');
   }));
 
   it('shows an error if the request fails', fakeAsync(() => {
@@ -66,19 +72,14 @@ describe('ForgotPasswordComponent', () => {
       throwError(() => ({ error: { message: 'Email not found' } }))
     );
 
-    const dyn = fixture.debugElement.query(By.directive(DynamicFormComponent))
-      .componentInstance as DynamicFormComponent;
+    const dyn = getFormComp(fixture);
 
     dyn.submitted.emit({ email: 'unknown@example.com' });
     tick();
     fixture.detectChanges();
 
-    const formError = fixture.debugElement.query(
-      By.directive(FormErrorComponent)
-    );
+    const formError = getErrorComp(fixture);
     expect(formError).not.toBeNull();
-    expect((formError.componentInstance as FormErrorComponent).message).toBe(
-      'Email not found'
-    );
+    expect(formError.message).toBe('Email not found');
   }));
 });

@@ -24,7 +24,8 @@ import { AuthService } from '../../services/auth/auth.service';
 export class ForgotPasswordComponent {
   public message: string | null = null;
 
-  public config: FormFieldConfig[] = [
+  // extracted so other flows can reuse it
+  public static readonly emailOnlyConfig: FormFieldConfig[] = [
     {
       name: 'email',
       type: 'email',
@@ -32,6 +33,8 @@ export class ForgotPasswordComponent {
       validators: [Validators.required, Validators.email],
     },
   ];
+
+  public config = ForgotPasswordComponent.emailOnlyConfig;
 
   public errorMessages = {
     required: 'Email is required.',

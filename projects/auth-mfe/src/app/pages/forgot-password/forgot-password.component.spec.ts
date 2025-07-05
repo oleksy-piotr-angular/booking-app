@@ -11,6 +11,7 @@ import { ForgotPasswordComponent } from './forgot-password.component';
 import { AuthService } from '../../services/auth/auth.service';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 import { FormErrorComponent } from '../../components/form-error/form-error.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('ForgotPasswordComponent', () => {
   let fixture: ComponentFixture<ForgotPasswordComponent>;
@@ -20,14 +21,19 @@ describe('ForgotPasswordComponent', () => {
     authSpy = jasmine.createSpyObj('AuthService', ['forgotPassword']);
 
     await TestBed.configureTestingModule({
-      imports: [ForgotPasswordComponent],
+      imports: [
+        ForgotPasswordComponent,
+        NoopAnimationsModule, // ← prevents @transition* errors
+      ],
       providers: [{ provide: AuthService, useValue: authSpy }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ForgotPasswordComponent);
+    fixture.detectChanges(); // ← run initial change detection
   });
 
   it('renders DynamicFormComponent with email field only', () => {
+    // initial detectChanges() has already rendered the form
     const form = fixture.debugElement.query(By.directive(DynamicFormComponent))
       .componentInstance as DynamicFormComponent;
 
@@ -38,6 +44,7 @@ describe('ForgotPasswordComponent', () => {
   it('calls AuthService.forgotPassword and shows success message', fakeAsync(() => {
     authSpy.forgotPassword.and.returnValue(of({}));
 
+    // initial detectChanges() has already rendered the form
     const dyn = fixture.debugElement.query(By.directive(DynamicFormComponent))
       .componentInstance as DynamicFormComponent;
 

@@ -64,4 +64,17 @@ describe('AuthService', () => {
 
     req.flush({});
   });
+
+  it('sends reset password request with token and new password', () => {
+    const token = 'abc123';
+    const newPassword = 'newPass!';
+
+    service.resetPassword(token, newPassword).subscribe();
+
+    const req = httpMock.expectOne('/api/auth/reset-password');
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual({ token, password: newPassword });
+
+    req.flush({});
+  });
 });

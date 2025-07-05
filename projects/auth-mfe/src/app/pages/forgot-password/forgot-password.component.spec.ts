@@ -14,12 +14,12 @@ import { FormErrorComponent } from '../../components/form-error/form-error.compo
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 // ─── Test Helpers ───────────────────────────────────────────────────────────
-function getFormComp(fixture: ComponentFixture<ForgotPasswordComponent>) {
+function getDynFormComp(fixture: ComponentFixture<ForgotPasswordComponent>) {
   return fixture.debugElement.query(By.directive(DynamicFormComponent))
     .componentInstance as DynamicFormComponent;
 }
 
-function getErrorComp(fixture: ComponentFixture<ForgotPasswordComponent>) {
+function getFormErrorComp(fixture: ComponentFixture<ForgotPasswordComponent>) {
   return fixture.debugElement.query(By.directive(FormErrorComponent))
     .componentInstance as FormErrorComponent;
 }
@@ -45,7 +45,7 @@ describe('ForgotPasswordComponent', () => {
 
   it('renders DynamicFormComponent with email field only', () => {
     // initial detectChanges() has already rendered the form
-    const form = getFormComp(fixture);
+    const form = getDynFormComp(fixture);
 
     expect(form.config.length).toBe(1);
     expect(form.config[0].name).toBe('email');
@@ -55,13 +55,13 @@ describe('ForgotPasswordComponent', () => {
     authSpy.forgotPassword.and.returnValue(of({}));
 
     // initial detectChanges() has already rendered the form
-    const dyn = getFormComp(fixture);
+    const dyn = getDynFormComp(fixture);
 
     dyn.submitted.emit({ email: 'user@example.com' });
     tick();
     fixture.detectChanges();
 
-    const formError = getErrorComp(fixture);
+    const formError = getFormErrorComp(fixture);
 
     expect(formError).not.toBeNull();
     expect(formError.message).toBe('Password reset email sent.');
@@ -72,13 +72,13 @@ describe('ForgotPasswordComponent', () => {
       throwError(() => ({ error: { message: 'Email not found' } }))
     );
 
-    const dyn = getFormComp(fixture);
+    const dyn = getDynFormComp(fixture);
 
     dyn.submitted.emit({ email: 'unknown@example.com' });
     tick();
     fixture.detectChanges();
 
-    const formError = getErrorComp(fixture);
+    const formError = getFormErrorComp(fixture);
     expect(formError).not.toBeNull();
     expect(formError.message).toBe('Email not found');
   }));

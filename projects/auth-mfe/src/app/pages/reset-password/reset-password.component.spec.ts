@@ -18,12 +18,12 @@ import { FormErrorComponent } from '../../components/form-error/form-error.compo
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 // ─── Test Helpers ───────────────────────────────────────────────────────────
-function getFormComp(fixture: ComponentFixture<any>) {
+function getDynFormComp(fixture: ComponentFixture<any>) {
   return fixture.debugElement.query(By.directive(DynamicFormComponent))
     .componentInstance as DynamicFormComponent;
 }
 
-function getErrorComp(fixture: ComponentFixture<any>) {
+function getFormErrorComp(fixture: ComponentFixture<any>) {
   return fixture.debugElement.query(By.directive(FormErrorComponent))
     .componentInstance as FormErrorComponent;
 }
@@ -53,7 +53,7 @@ describe('ResetPasswordComponent', () => {
   });
 
   it('renders password and confirmPassword fields', () => {
-    const form = getFormComp(fixture);
+    const form = getDynFormComp(fixture);
     expect(form.config.map((f: FormFieldConfig) => f.name)).toEqual([
       'password',
       'confirmPassword',
@@ -63,13 +63,13 @@ describe('ResetPasswordComponent', () => {
   it('calls resetPassword and shows success', fakeAsync(() => {
     authSpy.resetPassword.and.returnValue(of(undefined));
 
-    const form = getFormComp(fixture);
+    const form = getDynFormComp(fixture);
     form.submitted.emit({ password: 'abc', confirmPassword: 'abc' });
 
     tick();
     fixture.detectChanges();
 
-    const errCmp = getErrorComp(fixture);
+    const errCmp = getFormErrorComp(fixture);
     expect(authSpy.resetPassword).toHaveBeenCalledWith('xyz', 'abc');
     expect(errCmp.message).toBe('Password has been reset.');
   }));
@@ -79,13 +79,13 @@ describe('ResetPasswordComponent', () => {
       throwError(() => ({ error: { message: 'Invalid token' } }))
     );
 
-    const form = getFormComp(fixture);
+    const form = getDynFormComp(fixture);
     form.submitted.emit({ password: 'abc', confirmPassword: 'abc' });
 
     tick();
     fixture.detectChanges();
 
-    const errCmp = getErrorComp(fixture);
+    const errCmp = getFormErrorComp(fixture);
     expect(errCmp.message).toBe('Invalid token');
   }));
 });

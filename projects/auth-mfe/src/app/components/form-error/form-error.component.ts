@@ -41,10 +41,10 @@ import { Component, Input } from '@angular/core';
   `,
 })
 export class FormErrorComponent {
-  @Input() message: string | null = null;
-  @Input() messages: string[] | null = null;
+  @Input() public message: string | null = null;
+  @Input() public messages: string[] | null = null;
 
-  get dedupedMessages(): string[] {
+  public get dedupedMessages(): string[] {
     return Array.from(new Set(this.messages ?? []));
   }
 }

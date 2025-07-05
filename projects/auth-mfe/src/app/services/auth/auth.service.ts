@@ -23,4 +23,8 @@ export class AuthService {
   public login(payload: LoginPayload): Observable<{ token: string }> {
     return this.http.post<{ token: string }>(`${this.baseUrl}/login`, payload);
   }
+
+  forgotPassword(email: string): Observable<any> {
+    return new Observable((observer) => {});
+  }
 }

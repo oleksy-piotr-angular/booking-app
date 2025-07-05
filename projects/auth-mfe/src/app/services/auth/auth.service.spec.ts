@@ -52,4 +52,16 @@ describe('AuthService', () => {
     req.flush(mockResp);
     expect(actual).toEqual(mockResp);
   });
+
+  it('sends forgot password request with email', () => {
+    const email = 'user@example.com';
+
+    service.forgotPassword(email).subscribe();
+
+    const req = httpMock.expectOne('/api/auth/forgot-password');
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual({ email });
+
+    req.flush({});
+  });
 });

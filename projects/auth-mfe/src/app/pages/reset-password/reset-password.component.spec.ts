@@ -17,6 +17,17 @@ import {
 import { FormErrorComponent } from '../../components/form-error/form-error.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+// ─── Test Helpers ───────────────────────────────────────────────────────────
+function getFormComp(fixture: ComponentFixture<any>) {
+  return fixture.debugElement.query(By.directive(DynamicFormComponent))
+    .componentInstance as DynamicFormComponent;
+}
+
+function getErrorComp(fixture: ComponentFixture<any>) {
+  return fixture.debugElement.query(By.directive(FormErrorComponent))
+    .componentInstance as FormErrorComponent;
+}
+
 describe('ResetPasswordComponent', () => {
   let fixture: ComponentFixture<ResetPasswordComponent>;
   let authSpy: jasmine.SpyObj<AuthService>;
@@ -42,9 +53,7 @@ describe('ResetPasswordComponent', () => {
   });
 
   it('renders password and confirmPassword fields', () => {
-    const form = fixture.debugElement.query(
-      By.directive(DynamicFormComponent)
-    ).componentInstance;
+    const form = getFormComp(fixture);
     expect(form.config.map((f: FormFieldConfig) => f.name)).toEqual([
       'password',
       'confirmPassword',
@@ -54,17 +63,13 @@ describe('ResetPasswordComponent', () => {
   it('calls resetPassword and shows success', fakeAsync(() => {
     authSpy.resetPassword.and.returnValue(of(undefined));
 
-    const form = fixture.debugElement.query(
-      By.directive(DynamicFormComponent)
-    ).componentInstance;
+    const form = getFormComp(fixture);
     form.submitted.emit({ password: 'abc', confirmPassword: 'abc' });
 
     tick();
     fixture.detectChanges();
 
-    const errCmp = fixture.debugElement.query(
-      By.directive(FormErrorComponent)
-    ).componentInstance;
+    const errCmp = getErrorComp(fixture);
     expect(authSpy.resetPassword).toHaveBeenCalledWith('xyz', 'abc');
     expect(errCmp.message).toBe('Password has been reset.');
   }));
@@ -74,17 +79,13 @@ describe('ResetPasswordComponent', () => {
       throwError(() => ({ error: { message: 'Invalid token' } }))
     );
 
-    const form = fixture.debugElement.query(
-      By.directive(DynamicFormComponent)
-    ).componentInstance;
+    const form = getFormComp(fixture);
     form.submitted.emit({ password: 'abc', confirmPassword: 'abc' });
 
     tick();
     fixture.detectChanges();
 
-    const errCmp = fixture.debugElement.query(
-      By.directive(FormErrorComponent)
-    ).componentInstance;
+    const errCmp = getErrorComp(fixture);
     expect(errCmp.message).toBe('Invalid token');
   }));
 });

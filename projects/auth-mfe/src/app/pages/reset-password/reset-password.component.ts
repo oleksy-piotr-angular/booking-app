@@ -28,7 +28,8 @@ export class ResetPasswordComponent {
   private readonly token = this.route.snapshot.paramMap.get('token')!;
   public message: string | null = null;
 
-  public config: FormFieldConfig[] = [
+  // shared config for all “enter new password” flows
+  public static readonly passwordFieldsConfig: FormFieldConfig[] = [
     {
       name: 'password',
       type: 'password',
@@ -43,6 +44,8 @@ export class ResetPasswordComponent {
       confirmField: 'password',
     },
   ];
+
+  public config = ResetPasswordComponent.passwordFieldsConfig;
 
   public errorMessages = {
     required: 'This field is required.',

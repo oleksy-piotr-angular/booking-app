@@ -3,7 +3,11 @@ import { Router, UrlTree } from '@angular/router';
 import { of, isObservable, from, Observable } from 'rxjs';
 
 import { authGuard } from './auth.guard';
-import { AuthService } from '../services/auth/auth.service';
+import {
+  createRouterSpy,
+  provideMockAuthService,
+  provideMockRouter,
+} from '../../testing/test-helpers';
 
 describe('authGuard (TDD)', () => {
   let routerSpy: jasmine.SpyObj<Router>;
@@ -18,13 +22,10 @@ describe('authGuard (TDD)', () => {
   }
 
   beforeEach(() => {
-    routerSpy = jasmine.createSpyObj('Router', ['createUrlTree']);
+    routerSpy = createRouterSpy();
 
     TestBed.configureTestingModule({
-      providers: [
-        { provide: AuthService, useValue: { isAuthenticated$: of(false) } },
-        { provide: Router, useValue: routerSpy },
-      ],
+      providers: [provideMockAuthService(false), provideMockRouter(routerSpy)],
     });
   });
 
@@ -42,13 +43,10 @@ describe('authGuard (TDD)', () => {
 
   it('allows activation when authenticated', fakeAsync(() => {
     TestBed.resetTestingModule();
-    routerSpy = jasmine.createSpyObj('Router', ['createUrlTree']);
+    routerSpy = createRouterSpy();
 
     TestBed.configureTestingModule({
-      providers: [
-        { provide: AuthService, useValue: { isAuthenticated$: of(true) } },
-        { provide: Router, useValue: routerSpy },
-      ],
+      providers: [provideMockAuthService(true), provideMockRouter(routerSpy)],
     });
 
     let result: boolean | UrlTree | undefined;

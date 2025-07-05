@@ -34,4 +34,17 @@ describe('FormErrorComponent', () => {
       ?.nativeElement as HTMLElement;
     expect(el.textContent).toContain('Server failure');
   });
+
+  it('renders multiple error messages when messages input is provided', () => {
+    fixture.componentInstance.messages = [
+      'Invalid email',
+      'Password too short',
+    ];
+    fixture.detectChanges();
+
+    const liElements = fixture.nativeElement.querySelectorAll('li');
+    expect(liElements.length).toBe(2);
+    expect(liElements[0].textContent).toContain('Invalid email');
+    expect(liElements[1].textContent).toContain('Password too short');
+  });
 });

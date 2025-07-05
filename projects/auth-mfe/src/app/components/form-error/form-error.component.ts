@@ -13,4 +13,5 @@ import { Component, Input } from '@angular/core';
 })
 export class FormErrorComponent {
   @Input() message: string | null = null;
+  @Input() messages: string[] | null = null;
 }

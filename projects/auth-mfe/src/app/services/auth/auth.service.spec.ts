@@ -5,7 +5,7 @@ import {
 } from '@angular/common/http/testing';
 import { AuthService } from './auth.service';
 
-describe('AuthService', () => {
+describe('AuthService (TDD', () => {
   let service: AuthService;
   let httpMock: HttpTestingController;
 
@@ -16,6 +16,7 @@ describe('AuthService', () => {
     });
     service = TestBed.inject(AuthService);
     httpMock = TestBed.inject(HttpTestingController);
+    localStorage.clear(); // ensure clean state
   });
 
   afterEach(() => {
@@ -76,5 +77,23 @@ describe('AuthService', () => {
     expect(req.request.body).toEqual({ token, password: newPassword });
 
     req.flush({});
+  });
+
+  it('emits false from isAuthenticated$ by default (no token)', (done) => {
+    service.isAuthenticated$.subscribe((value) => {
+      expect(value).toBeFalse();
+      done();
+    });
+  });
+
+  it('emits true from isAuthenticated$ when token is set', (done) => {
+    localStorage.setItem('auth_token', 'abc123');
+
+    // Re-instantiate service to pick up token
+    service = TestBed.inject(AuthService);
+    service.isAuthenticated$.subscribe((value) => {
+      expect(value).toBeTrue();
+      done();
+    });
   });
 });

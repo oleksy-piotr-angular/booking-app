@@ -15,6 +15,9 @@ export interface LoginPayload {
 export class AuthService {
   private baseUrl = '/api';
   private http: HttpClient = inject(HttpClient);
+  public readonly isAuthenticated$ = new Observable<boolean>(
+    (subscriber) => {}
+  );
 
   public register(payload: RegisterPayload): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/register`, payload);

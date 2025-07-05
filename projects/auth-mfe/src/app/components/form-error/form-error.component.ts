@@ -3,7 +3,27 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'am-form-error',
   standalone: true,
+  styles: [
+    `
+      .error-message {
+        margin-top: 1rem;
+        padding: 1rem;
+        background-color: #fdecea;
+        color: #b71c1c;
+        border-left: 4px solid #f44336;
+        border-radius: 4px;
+      }
 
+      ul {
+        padding-left: 1.2rem;
+        margin: 0;
+      }
+
+      li {
+        margin: 0.25rem 0;
+      }
+    `,
+  ],
   template: `
     @if (dedupedMessages.length) {
     <div class="error-message mat-error" role="alert">

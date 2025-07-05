@@ -4,7 +4,15 @@ import { Component, Input } from '@angular/core';
   selector: 'am-form-error',
   standalone: true,
   template: `
-    @if(message){
+    @if (messages?.length) {
+    <div class="error-message mat-error" role="alert">
+      <ul>
+        @for (msg of messages; track msg) {
+        <li>{{ msg }}</li>
+        }
+      </ul>
+    </div>
+    } @else if (message) {
     <div class="error-message mat-error" role="alert">
       {{ message }}
     </div>

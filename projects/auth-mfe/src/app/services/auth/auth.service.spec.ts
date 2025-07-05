@@ -79,21 +79,62 @@ describe('AuthService (TDD)', () => {
     req.flush({});
   });
 
-  xit('emits false from isAuthenticated$ by default (no token)', (done) => {
+  it('emits false from isAuthenticated$ by default (no token)', (done) => {
+    localStorage.removeItem('auth_token'); // ensure it's not set
+
+    // 🔄 Recreate AuthService AFTER changing localStorage
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [AuthService],
+    });
+
+    const service = TestBed.inject(AuthService);
+
     service.isAuthenticated$.subscribe((value) => {
       expect(value).toBeFalse();
       done();
     });
   });
 
-  xit('emits true from isAuthenticated$ when token is set', (done) => {
-    localStorage.setItem('auth_token', 'abc123');
+  it('emits true from isAuthenticated$ when token is set', (done) => {
+    localStorage.setItem('auth_token', 'abc123'); // set BEFORE injecting service
 
-    // Re-instantiate service to pick up token
-    service = TestBed.inject(AuthService);
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [AuthService],
+    });
+
+    const service = TestBed.inject(AuthService);
+
     service.isAuthenticated$.subscribe((value) => {
       expect(value).toBeTrue();
       done();
     });
+  });
+
+  it('removes token from localStorage when logout() is called', () => {
+    localStorage.setItem('auth_token', 'existing-token');
+
+    service = TestBed.inject(AuthService);
+    service.logout();
+
+    expect(localStorage.getItem('auth_token')).toBeNull();
+  });
+
+  it('calls setToken() with the token after successful login', (done) => {
+    const payload = { email: 'me@a.com', password: 'abc' };
+    const mockToken = { token: 'jwt.abc.123' };
+
+    spyOn(service, 'setToken');
+
+    service.login(payload).subscribe(() => {
+      expect(service.setToken).toHaveBeenCalledWith(mockToken.token);
+      done();
+    });
+
+    const req = httpMock.expectOne('/api/login');
+    req.flush(mockToken);
   });
 });

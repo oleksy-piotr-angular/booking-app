@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 
 export interface RegisterPayload {
   email: string;
@@ -15,8 +15,10 @@ export interface LoginPayload {
 export class AuthService {
   private baseUrl = '/api';
   private http: HttpClient = inject(HttpClient);
+  private readonly tokenKey = 'auth_token';
+
   private readonly tokenSubject = new BehaviorSubject<string | null>(
-    localStorage.getItem('auth_token')
+    localStorage.getItem(this.tokenKey)
   );
 
   public readonly isAuthenticated$ = this.tokenSubject.pipe(
@@ -28,7 +30,9 @@ export class AuthService {
   }
 
   public login(payload: LoginPayload): Observable<{ token: string }> {
-    return this.http.post<{ token: string }>(`${this.baseUrl}/login`, payload);
+    return this.http
+      .post<{ token: string }>(`${this.baseUrl}/login`, payload)
+      .pipe(tap((response) => this.setToken(response.token)));
   }
 
   public forgotPassword(email: string): Observable<any> {
@@ -42,13 +46,17 @@ export class AuthService {
     });
   }
 
-  // Add a method to mutate the token
-  public setToken(token: string | null): void {
-    if (token) {
-      localStorage.setItem('auth_token', token);
-    } else {
-      localStorage.removeItem('auth_token');
-    }
+  public logout(): void {
+    this.clearToken();
+  }
+
+  public setToken(token: string): void {
+    localStorage.setItem(this.tokenKey, token);
     this.tokenSubject.next(token);
+  }
+
+  public clearToken(): void {
+    localStorage.removeItem(this.tokenKey);
+    this.tokenSubject.next(null);
   }
 }

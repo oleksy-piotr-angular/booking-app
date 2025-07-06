@@ -12,6 +12,7 @@ export interface LoginPayload {
 }
 
 export interface UserProfile {
+  id: number;
   name: string;
   email: string;
 }
@@ -21,6 +22,7 @@ export class AuthService {
   private baseUrl = '/api';
   private http: HttpClient = inject(HttpClient);
   private readonly tokenKey = 'auth_token';
+  private readonly userIdKey = 'auth_user_id';
 
   private readonly tokenSubject = new BehaviorSubject<string | null>(
     localStorage.getItem(this.tokenKey)
@@ -34,10 +36,16 @@ export class AuthService {
     return this.http.post<any>(`${this.baseUrl}/register`, payload);
   }
 
-  public login(payload: LoginPayload): Observable<{ token: string }> {
+  public login(
+    payload: LoginPayload
+  ): Observable<{ id: number; token: string }> {
     return this.http
-      .post<{ token: string }>(`${this.baseUrl}/login`, payload)
-      .pipe(tap((response) => this.setToken(response.token)));
+      .post<{ id: number; token: string }>(`${this.baseUrl}/login`, payload)
+      .pipe(
+        tap((response) =>
+          this.setToken({ id: response.id, token: response.token })
+        )
+      );
   }
 
   public forgotPassword(email: string): Observable<any> {
@@ -55,17 +63,26 @@ export class AuthService {
     this.clearToken();
   }
 
-  public setToken(token: string): void {
+  public setToken({ id, token }: { id: number; token: string }): void {
     localStorage.setItem(this.tokenKey, token);
+    localStorage.setItem(this.userIdKey, String(id));
     this.tokenSubject.next(token);
   }
 
   public clearToken(): void {
     localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem(this.userIdKey);
     this.tokenSubject.next(null);
   }
 
+  public getUserId(): number | null {
+    const raw = localStorage.getItem(this.userIdKey);
+    return raw ? Number(raw) : null;
+  }
+
   public getProfile(): Observable<UserProfile> {
-    return this.http.get<UserProfile>(`${this.baseUrl}/profile`);
+    const id = this.getUserId();
+    if (!id) throw new Error('User ID not available');
+    return this.http.get<UserProfile>(`${this.baseUrl}/users/${id}`);
   }
 }

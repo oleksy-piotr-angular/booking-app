@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { unauthGuard } from './guards/host-unauth.guard';
 
 export const AUTH_ROUTES: Routes = [
   {
@@ -9,7 +10,19 @@ export const AUTH_ROUTES: Routes = [
     redirectTo: 'login',
     pathMatch: 'full',
   },
-  { path: 'register', component: RegisterComponent },
-  { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'login', component: LoginComponent },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    canActivate: [unauthGuard],
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent,
+    canActivate: [unauthGuard],
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [unauthGuard],
+  },
 ];

@@ -53,7 +53,5 @@ export const HOST_ROUTES: Routes = [
         exposedModule: './ListingsRoutes',
       }).then((m) => m.LISTINGS_ROUTES),
   },
-
   { path: '**', component: NotFoundComponent },
-  //TODO need to commit those changes and need to do routes for "auth-mfe"
 ];

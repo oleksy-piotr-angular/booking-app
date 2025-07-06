@@ -14,6 +14,7 @@ describe('ProfileComponent (TDD)', () => {
 
   beforeEach(() => {
     const mockProfile: UserProfile = {
+      id: 1,
       name: 'Piotr',
       email: 'piotr@example.com',
     };

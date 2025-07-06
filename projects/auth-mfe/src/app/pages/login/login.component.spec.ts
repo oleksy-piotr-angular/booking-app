@@ -48,7 +48,7 @@ describe('LoginComponent (TDD)', () => {
 
   it('calls AuthService.login and navigates on success', () => {
     const payload: LoginPayload = { email: 'a@b.com', password: 'pw' };
-    authSpy.login.and.returnValue(of({ token: 'x' }));
+    authSpy.login.and.returnValue(of({ id: 1, token: 'x' }));
 
     const dyn = fixture.debugElement.query(By.directive(DynamicFormComponent))
       .componentInstance as DynamicFormComponent;

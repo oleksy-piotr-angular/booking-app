@@ -1,7 +1,17 @@
 {
   "users": [
-    { "id": 1, "username": "piotr", "password": "secret123" },
-    { "id": 2, "username": "admin", "password": "admin123" }
+    {
+      "id": 1,
+      "email": "piotr@example.com",
+      "password": "secret123",
+      "name": "Piotr"
+    },
+    {
+      "id": 2,
+      "email": "admin@example.com",
+      "password": "admin123",
+      "name": "Admin"
+    }
   ],
   "listings": [
     { "id": 1, "title": "Seaside Cottage", "price": 220 },

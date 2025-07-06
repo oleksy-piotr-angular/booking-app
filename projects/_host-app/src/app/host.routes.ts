@@ -1,21 +1,31 @@
+// projects/_host-app/src/app/host.routes.ts
+
 import { Routes } from '@angular/router';
 import { loadRemoteModule } from '@angular-architects/module-federation';
 import { HomeComponent } from './components/home/home.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
+// ← import your functional guard
+import { hostAuthGuard } from './guards/host-auth.guard';
+
 export const HOST_ROUTES: Routes = [
   { path: '', component: HomeComponent },
+
+  // auth UI stays unguarded
   {
     path: 'auth',
     loadChildren: () =>
       loadRemoteModule({
-        type: 'module', // <-- ES module remote
+        type: 'module',
         remoteEntry: 'http://localhost:4201/authRemoteEntry.js',
-        exposedModule: './AuthRoutes', // matches your expose name
-      }).then((m) => m.AUTH_ROUTES), // grabs the exported const from auth-mfe
+        exposedModule: './AuthRoutes',
+      }).then((m) => m.AUTH_ROUTES),
   },
+
+  // everything else requires authentication
   {
     path: 'search',
+    canMatch: [hostAuthGuard],
     loadChildren: () =>
       loadRemoteModule({
         type: 'module',
@@ -25,6 +35,7 @@ export const HOST_ROUTES: Routes = [
   },
   {
     path: 'hotel/:id',
+    canMatch: [hostAuthGuard],
     loadChildren: () =>
       loadRemoteModule({
         type: 'module',
@@ -34,6 +45,7 @@ export const HOST_ROUTES: Routes = [
   },
   {
     path: 'listings',
+    canMatch: [hostAuthGuard],
     loadChildren: () =>
       loadRemoteModule({
         type: 'module',
@@ -41,5 +53,7 @@ export const HOST_ROUTES: Routes = [
         exposedModule: './ListingsRoutes',
       }).then((m) => m.LISTINGS_ROUTES),
   },
+
   { path: '**', component: NotFoundComponent },
+  //TODO need to commit those changes and need to do routes for "auth-mfe"
 ];

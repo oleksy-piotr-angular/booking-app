@@ -11,6 +11,11 @@ export interface LoginPayload {
   password: string;
 }
 
+export interface UserProfile {
+  name: string;
+  email: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private baseUrl = '/api';

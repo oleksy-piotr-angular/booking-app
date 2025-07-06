@@ -3,7 +3,7 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { AuthService } from './auth.service';
+import { AuthService, UserProfile } from './auth.service';
 
 describe('AuthService (TDD)', () => {
   let service: AuthService;
@@ -136,5 +136,20 @@ describe('AuthService (TDD)', () => {
 
     const req = httpMock.expectOne('/api/login');
     req.flush(mockToken);
+  });
+
+  it('should fetch current user profile from /api/profile', () => {
+    const mockProfile: UserProfile = {
+      name: 'Piotr',
+      email: 'piotr@example.com',
+    };
+
+    service.getProfile().subscribe((res) => {
+      expect(res).toEqual(mockProfile);
+    });
+
+    const req = httpMock.expectOne('/api/profile');
+    expect(req.request.method).toBe('GET');
+    req.flush(mockProfile);
   });
 });

@@ -64,4 +64,14 @@ export class AuthService {
     localStorage.removeItem(this.tokenKey);
     this.tokenSubject.next(null);
   }
+
+  public getProfile(): Observable<UserProfile | null> {
+    const userProfile: UserProfile = {
+      name: 'a',
+      email: 'a',
+    };
+    return new Observable((observer) => {
+      observer.next(userProfile);
+    });
+  }
 }

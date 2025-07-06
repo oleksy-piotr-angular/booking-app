@@ -65,13 +65,7 @@ export class AuthService {
     this.tokenSubject.next(null);
   }
 
-  public getProfile(): Observable<UserProfile | null> {
-    const userProfile: UserProfile = {
-      name: 'a',
-      email: 'a',
-    };
-    return new Observable((observer) => {
-      observer.next(userProfile);
-    });
+  public getProfile(): Observable<UserProfile> {
+    return this.http.get<UserProfile>(`${this.baseUrl}/profile`);
   }
 }

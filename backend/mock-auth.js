@@ -1,3 +1,4 @@
+//mock-auth.js
 const express    = require('express');
 const bodyParser = require('body-parser');
 const jwt        = require('jsonwebtoken');
@@ -11,8 +12,13 @@ const SECRET = 'dev-jwt-secret';
 // Login endpoint
 app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
+  console.log('[LOGIN] Incoming payload:', req.body);
+  console.log('[LOGIN] Loaded users:', users);
   const user = users.find(u => u.email === email && u.password === password);
-  if (!user) return res.status(401).json({ message: 'Invalid credentials' });
+  if (!user){
+      console.error('[LOGIN] No match for:', email);
+     return res.status(401).json({ message: 'Invalid credentials' });
+    }
 
   const token = jwt.sign({ sub: user.id, email: user.email }, SECRET, { expiresIn: '1h' });
   res.json({ accessToken: token, user: { id: user.id, email: user.email } });

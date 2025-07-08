@@ -1,3 +1,4 @@
+// host-unauth.guard.ts
 import { inject } from '@angular/core';
 import {
   CanActivateFn,

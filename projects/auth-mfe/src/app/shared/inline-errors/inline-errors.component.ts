@@ -1,3 +1,4 @@
+// inline-errors.component.ts
 import { Component, Input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';

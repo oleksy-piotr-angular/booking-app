@@ -1,3 +1,4 @@
+// inline-errors.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { InlineErrorsComponent } from './inline-errors.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';

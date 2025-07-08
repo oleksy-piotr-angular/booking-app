@@ -1,3 +1,4 @@
+// listings.routes.ts
 // projects/listings-mfe/src/app/listings.routes.ts
 import { Routes } from '@angular/router';
 import { ListingsComponent } from './components/listings/listings.component';

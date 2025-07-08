@@ -1,3 +1,4 @@
+// listings.component.ts
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 

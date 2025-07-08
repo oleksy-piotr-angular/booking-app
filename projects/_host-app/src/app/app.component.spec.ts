@@ -1,3 +1,4 @@
+// app.component.spec.ts
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { provideRouter, Router } from '@angular/router';

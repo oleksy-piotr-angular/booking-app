@@ -1,3 +1,4 @@
+// search.routes.ts
 import { Routes } from '@angular/router';
 import { SearchFormComponent } from './components/search-form/search-form.component';
 

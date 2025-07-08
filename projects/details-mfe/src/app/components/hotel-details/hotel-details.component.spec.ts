@@ -1,3 +1,4 @@
+// hotel-details.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HotelDetailsComponent } from './hotel-details.component';

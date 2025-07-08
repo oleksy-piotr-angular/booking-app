@@ -1,3 +1,4 @@
+// app.config.ts
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import {
   provideRouter,

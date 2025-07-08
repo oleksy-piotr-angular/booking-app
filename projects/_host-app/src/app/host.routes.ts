@@ -1,3 +1,4 @@
+// host.routes.ts
 // projects/_host-app/src/app/host.routes.ts
 
 import { Routes } from '@angular/router';

@@ -1,3 +1,4 @@
+// host-auth.guard.ts
 import { inject, InjectionToken } from '@angular/core';
 import {
   CanMatchFn,

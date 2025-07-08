@@ -1,3 +1,4 @@
+// forgot-password.component.ts
 import { Component, inject } from '@angular/core';
 import { Validators } from '@angular/forms';
 import {

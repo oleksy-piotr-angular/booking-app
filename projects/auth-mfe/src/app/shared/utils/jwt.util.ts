@@ -1,3 +1,4 @@
+// jwt.util.ts
 export function isTokenExpired(token: string): boolean {
   try {
     const [, payload] = token.split('.');

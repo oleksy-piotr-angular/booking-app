@@ -1,3 +1,4 @@
+// profile.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';

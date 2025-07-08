@@ -76,12 +76,9 @@ export class DynamicFormComponent<T extends Record<string, any> = any>
   }
 
   public onSubmit(event: Event): void {
-    console.log('[FORM SUBMIT1]', event);
     event.preventDefault(); // prevent native form submission
-    console.log('[FORM SUBMIT2]', event);
     this.form.markAllAsTouched();
     if (this.form.valid) {
-      console.log('Form submitted with value:', this.form.value);
       this.submitted.emit(this.form.value);
     }
   }

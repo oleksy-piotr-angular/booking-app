@@ -7,10 +7,13 @@ import { MaterialModule } from '../material.module';
   selector: 'am-inline-errors',
   standalone: true,
   imports: [CommonModule, MaterialModule],
-  template: `@if (control.errors && (control.dirty || control.touched)) { @for
-    (key of objectKeys(control.errors); track key) {
-    <mat-error>{{ errorMessages[key] || key }}</mat-error>
-    } }`,
+  template: ` <ng-container
+    *ngIf="control.errors && (control.dirty || control.touched)"
+  >
+    <mat-error *ngFor="let key of objectKeys(control.errors)">
+      {{ errorMessages[key] || key }}
+    </mat-error>
+  </ng-container>`,
 })
 export class InlineErrorsComponent {
   @Input() public control!: AbstractControl;

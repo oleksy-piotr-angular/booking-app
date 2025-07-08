@@ -1,3 +1,4 @@
+//dynamic-form.component.ts
 import {
   Component,
   Input,
@@ -33,12 +34,14 @@ export interface FormFieldConfig {
   ],
   templateUrl: './dynamic-form.component.html',
 })
-export class DynamicFormComponent implements OnInit, OnChanges {
+export class DynamicFormComponent<T extends Record<string, any> = any>
+  implements OnInit, OnChanges
+{
   @Input() public config: FormFieldConfig[] = [];
   @Input() public submitLabel = 'Submit';
   @Input() public errorMessages: Record<string, string> = {};
 
-  @Output() public submitted = new EventEmitter<any>();
+  @Output() public submitted = new EventEmitter<T>();
 
   public form!: FormGroup;
 
@@ -71,10 +74,19 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     });
   }
 
-  public onSubmit(): void {
+  public onSubmit(event: Event): void {
+    console.log('[FORM SUBMIT1]', event);
+    event.preventDefault(); // prevent native form submission
+    console.log('[FORM SUBMIT2]', event);
     this.form.markAllAsTouched();
     if (this.form.valid) {
+      console.log('Form submitted with value:', this.form.value);
       this.submitted.emit(this.form.value);
     }
+  }
+
+  // Add this method to track form fields by name on ngFor
+  public trackByName(index: number, field: FormFieldConfig): string {
+    return field.name;
   }
 }

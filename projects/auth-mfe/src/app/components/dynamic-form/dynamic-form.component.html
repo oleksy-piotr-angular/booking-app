@@ -1,21 +1,21 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  @for (f of config; track f.name) {
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>{{ f.label }}</mat-label>
-    <input
-      matInput
-      [type]="f.type"
-      [placeholder]="f.placeholder || ''"
-      [formControlName]="f.name"
-    />
+<form [formGroup]="form" (ngSubmit)="onSubmit($event)">
+  <ng-container *ngFor="let f of config; trackBy: trackByName">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ f.label }}</mat-label>
+      <input
+        matInput
+        [type]="f.type"
+        [placeholder]="f.placeholder || ''"
+        [formControlName]="f.name"
+      />
 
-    <am-inline-errors
-      [control]="form.get(f.name)!"
-      [errorMessages]="errorMessages"
-    >
-    </am-inline-errors>
-  </mat-form-field>
-  }
+      <am-inline-errors
+        [control]="form.get(f.name)!"
+        [errorMessages]="errorMessages"
+      >
+      </am-inline-errors>
+    </mat-form-field>
+  </ng-container>
 
   <button mat-raised-button color="primary" type="submit">
     {{ submitLabel }}

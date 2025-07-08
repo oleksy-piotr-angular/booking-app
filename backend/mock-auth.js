@@ -53,6 +53,25 @@ app.get('/api/users/:id', (req, res) => {
   }
 });
 
+// Register endpoint
+app.post('/api/register', (req, res) => {
+  const { email, password, name } = req.body;
+  if (users.find(u => u.email === email)) {
+    return res.status(409).json({ message: 'Email already in use' });
+  }
+
+  const newUser = {
+    id: users.length + 1,
+    email,
+    password,
+    name: name || email.split('@')[0]
+  };
+  users.push(newUser);
+  // Note: for a real DB you'd persist to disk; here we just modify the in-memory array
+  const token = jwt.sign({ sub: newUser.id, email: newUser.email }, SECRET, { expiresIn: '1h' });
+  res.status(201).json({ accessToken: token, user: { id: newUser.id, email: newUser.email } });
+});
+
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

@@ -1,12 +1,11 @@
 // auth.service.spec.ts
-// projects/auth-mfe/src/app/services/auth/auth.service.spec.ts
-
 import { TestBed } from '@angular/core/testing';
 import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { AuthService, UserProfile } from './auth.service';
+import { environment } from '../../../../../../environments/environment';
 
 describe('AuthService (TDD)', () => {
   let service: AuthService;
@@ -31,13 +30,13 @@ describe('AuthService (TDD)', () => {
   });
 
   it('should post to /api/register and return the response', () => {
-    const payload = { email: 'a@b.com', password: '123456' };
+    const payload = { name: 'Test User', email: 'a@b.com', password: '123456' };
     const mockResp = { success: true, userId: 42 };
 
     let actual: any;
     service.register(payload).subscribe((res) => (actual = res));
 
-    const req = httpMock.expectOne('/api/register');
+    const req = httpMock.expectOne(`${environment.apiBase}/register`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(payload);
 
@@ -46,7 +45,7 @@ describe('AuthService (TDD)', () => {
   });
 
   it('should POST to /api/login, store token and user ID', (done) => {
-    const payload = { email: 'me@a.com', password: 'abc' };
+    const payload = { name: 'Test User', email: 'me@a.com', password: 'abc' };
     const mockResp = { id: 7, token: 'jwt.abc.123' };
 
     service.login(payload).subscribe(() => {
@@ -55,7 +54,7 @@ describe('AuthService (TDD)', () => {
       done();
     });
 
-    const req = httpMock.expectOne('/api/login');
+    const req = httpMock.expectOne(`${environment.apiBase}/login`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(payload);
 
@@ -66,7 +65,9 @@ describe('AuthService (TDD)', () => {
     const email = 'user@example.com';
     service.forgotPassword(email).subscribe();
 
-    const req = httpMock.expectOne('/api/auth/forgot-password');
+    const req = httpMock.expectOne(
+      `${environment.apiBase}/auth/forgot-password`
+    );
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual({ email });
 
@@ -78,7 +79,9 @@ describe('AuthService (TDD)', () => {
     const newPassword = 'newPass!';
     service.resetPassword(token, newPassword).subscribe();
 
-    const req = httpMock.expectOne('/api/auth/reset-password');
+    const req = httpMock.expectOne(
+      `${environment.apiBase}/auth/reset-password`
+    );
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual({ token, password: newPassword });
 
@@ -134,7 +137,7 @@ describe('AuthService (TDD)', () => {
 
     service.getProfile().subscribe((p) => (actualProfile = p));
 
-    const req = httpMock.expectOne('/api/users/1');
+    const req = httpMock.expectOne(`${environment.apiBase}/users/1`);
     expect(req.request.method).toBe('GET');
     req.flush(mockProfile);
 

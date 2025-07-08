@@ -12,8 +12,13 @@ const SECRET = 'dev-jwt-secret';
 // Login endpoint
 app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
+
+  //preserve for debugging
+  if (process.env.NODE_ENV !== 'production') {
   console.log('[LOGIN] Incoming payload:', req.body);
   console.log('[LOGIN] Loaded users:', users);
+}
+
   const user = users.find(u => u.email === email && u.password === password);
   if (!user){
       console.error('[LOGIN] No match for:', email);

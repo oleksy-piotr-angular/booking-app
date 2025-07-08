@@ -13,7 +13,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "api": "json-server --watch backend/db.json --port 3000",
-    "run:all": "node node_modules/@angular-architects/module-federation/src/server/mf-dev-server.js"
+    "run:all": "node node_modules/@angular-architects/module-federation/src/server/mf-dev-server.js",
+    "mock-auth": "node backend/mock-auth.js"
   },
   "private": true,
   "dependencies": {

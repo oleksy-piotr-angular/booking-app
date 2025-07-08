@@ -1,14 +1,11 @@
-// register.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from '../../shared/material.module';
-
-import { RegisterComponent } from './register.component';
-import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
-import { AuthService } from '../../services/auth/auth.service';
 import { of } from 'rxjs';
+
+import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
+import { RegisterComponent } from './register.component';
+import { AuthService } from '../../services/auth/auth.service';
 
 describe('RegisterComponent (TDD)', () => {
   let fixture: ComponentFixture<RegisterComponent>;
@@ -17,15 +14,13 @@ describe('RegisterComponent (TDD)', () => {
 
   beforeEach(async () => {
     authSpy = jasmine.createSpyObj('AuthService', ['register']);
-    authSpy.register.and.returnValue(of({ userId: 42 }));
+    // our mock server returns { accessToken, user }, but tests only care that register() was called
+    authSpy.register.and.returnValue(
+      of({ accessToken: 'tkn', user: { id: 42, email: 'x@y.com' } })
+    );
 
     await TestBed.configureTestingModule({
-      imports: [
-        RegisterComponent,
-        ReactiveFormsModule,
-        MaterialModule,
-        NoopAnimationsModule,
-      ],
+      imports: [RegisterComponent, NoopAnimationsModule],
       providers: [{ provide: AuthService, useValue: authSpy }],
     }).compileComponents();
 
@@ -33,48 +28,51 @@ describe('RegisterComponent (TDD)', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-  it('should create a component', () => {
+
+  it('should create the RegisterComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should pass email/password payload to AuthService.register()', () => {
-    // grab DynamicFormComponent instance
+  it('should pass name, email & password to AuthService.register()', () => {
+    // grab the dynamic form instance
     const dyn = fixture.debugElement.query(By.directive(DynamicFormComponent))
       .componentInstance as DynamicFormComponent;
 
-    // simulate user submit with all 3 fields
+    // simulate user filling all 4 fields
     const formValue = {
+      name: 'Test User',
       email: 'x@y.com',
       password: 'secret1',
       confirmPassword: 'secret1',
     };
+
+    // emit submitted
     dyn.submitted.emit(formValue);
 
-    // expect only email+password to be passed
+    // expect register() called once with name/email/password only
     expect(authSpy.register).toHaveBeenCalledOnceWith({
+      name: 'Test User',
       email: 'x@y.com',
       password: 'secret1',
     });
   });
 
-  it('should not call AuthService.register() if passwords do not match', () => {
-    const el: HTMLElement = fixture.nativeElement;
-
+  it('should not call register() if passwords do not match', () => {
     // simulate mismatch
-    const bad = {
+    const badValue = {
+      name: 'Test User',
       email: 'x@y.com',
       password: 'abc123',
       confirmPassword: 'xyz789',
     };
-    // call the page-level onSubmit
-    fixture.componentInstance.onSubmit(bad);
+
+    component.onSubmit(badValue);
     fixture.detectChanges();
 
-    // register should NOT be called
     expect(authSpy.register).not.toHaveBeenCalled();
-
-    // and we should see our mismatch error in the template
-    expect(el.textContent).toContain('Passwords do not match');
+    expect(fixture.nativeElement.textContent).toContain(
+      'Passwords do not match'
+    );
   });
 
   it('should show passwordMismatch error under confirmPassword', async () => {
@@ -83,19 +81,19 @@ describe('RegisterComponent (TDD)', () => {
     );
     const dynCmp = dynDE.componentInstance as DynamicFormComponent;
 
-    // simulate submission; form builder will mark all touched
+    // set form values directly, mark touched to trigger validators
     dynCmp.form.setValue({
+      name: 'Test User',
       email: 'x@y.com',
-      password: '123456', // valid length
-      confirmPassword: '654321', // same length but not equal
+      password: '123456',
+      confirmPassword: '654321',
     });
-
     dynCmp.form.markAllAsTouched();
     fixture.detectChanges();
     await fixture.whenStable();
 
-    // confirm the mat-error appears
-    const msg = fixture.nativeElement.querySelector('mat-error').textContent;
-    expect(msg).toContain('Passwords do not match');
+    const matError =
+      fixture.nativeElement.querySelector('mat-error').textContent;
+    expect(matError).toContain('Passwords do not match');
   });
 });

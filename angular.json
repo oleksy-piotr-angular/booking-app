@@ -174,7 +174,8 @@
           "options": {
             "port": 4201,
             "publicHost": "http://localhost:4201",
-            "extraWebpackConfig": "projects/auth-mfe/webpack.config.js"
+            "extraWebpackConfig": "projects/auth-mfe/webpack.config.js",
+            "proxyConfig": "proxy.conf.json"
           }
         },
         "extract-i18n": {
@@ -272,7 +273,8 @@
           "options": {
             "port": 4202,
             "publicHost": "http://localhost:4202",
-            "extraWebpackConfig": "projects/details-mfe/webpack.config.js"
+            "extraWebpackConfig": "projects/details-mfe/webpack.config.js",
+            "proxyConfig": "proxy.conf.json"
           }
         },
         "extract-i18n": {
@@ -370,7 +372,8 @@
           "options": {
             "port": 4203,
             "publicHost": "http://localhost:4203",
-            "extraWebpackConfig": "projects/search-mfe/webpack.config.js"
+            "extraWebpackConfig": "projects/search-mfe/webpack.config.js",
+            "proxyConfig": "proxy.conf.json"
           }
         },
         "extract-i18n": {
@@ -468,7 +471,8 @@
           "options": {
             "port": 4204,
             "publicHost": "http://localhost:4204",
-            "extraWebpackConfig": "projects/listings-mfe/webpack.config.js"
+            "extraWebpackConfig": "projects/listings-mfe/webpack.config.js",
+            "proxyConfig": "proxy.conf.json"
           }
         },
         "extract-i18n": {

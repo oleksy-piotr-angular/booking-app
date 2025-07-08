@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
-
+import { environment } from '../../../../../../environments/environment';
 export interface RegisterPayload {
   email: string;
   password: string;
@@ -19,7 +19,7 @@ export interface UserProfile {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private baseUrl = '/api';
+  private baseUrl = environment.apiBase;
   private http: HttpClient = inject(HttpClient);
   private readonly tokenKey = 'auth_token';
   private readonly userIdKey = 'auth_user_id';

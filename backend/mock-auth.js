@@ -1,10 +1,18 @@
 //mock-auth.js
+const cors = require('cors');
 const express    = require('express');
 const bodyParser = require('body-parser');
 const jwt        = require('jsonwebtoken');
 const { users }  = require('./db.json');  // your users array
 
 const app = express();
+app.use(cors({ origin: [
+  'http://localhost:4200', 
+  'http://localhost:4201', 
+  'http://localhost:4202',
+  'http://localhost:4203',
+  'http://localhost:4204',
+] }));
 app.use(bodyParser.json());
 
 const SECRET = 'dev-jwt-secret';

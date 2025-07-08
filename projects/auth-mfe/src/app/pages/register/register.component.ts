@@ -1,8 +1,8 @@
 // register.component.ts
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, Validators } from '@angular/forms';
-import { MaterialModule } from '../../shared/material.module';
+import { Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
 import {
   DynamicFormComponent,
   FormFieldConfig,
@@ -13,13 +13,7 @@ import { FormErrorComponent } from '../../components/form-error/form-error.compo
 @Component({
   selector: 'am-register-form',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MaterialModule,
-    DynamicFormComponent,
-    FormErrorComponent,
-  ],
+  imports: [DynamicFormComponent, FormErrorComponent],
   template: `
     <am-dynamic-form
       [config]="config"
@@ -32,7 +26,18 @@ import { FormErrorComponent } from '../../components/form-error/form-error.compo
   `,
 })
 export class RegisterComponent {
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
+
+  public errorMsg: string | null = null;
+
   public config: FormFieldConfig[] = [
+    {
+      name: 'name',
+      type: 'text',
+      label: 'Full Name',
+      validators: [Validators.required],
+    },
     {
       name: 'email',
       type: 'email',
@@ -54,34 +59,29 @@ export class RegisterComponent {
     },
   ];
 
-  public mismatchError = false;
-  public errorMsg: string | null = null;
-
   public errorMessages = {
     required: 'This field is required.',
-    passwordMismatch: 'Passwords do not match. Please try again.',
+    email: 'Please enter a valid email address.',
+    minlength: 'Password must be at least 6 characters.',
+    passwordMismatch: 'Passwords do not match.',
   };
 
-  private readonly auth = inject(AuthService);
+  public onSubmit(value: {
+    name: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+  }): void {
+    this.errorMsg = null;
 
-  public onSubmit(value: any): void {
-    const { password, confirmPassword, ...rest } = value;
-
-    if (password !== confirmPassword) {
-      this.mismatchError = true;
-      this.errorMsg = 'Passwords do not match. Please try again.';
+    if (value.password !== value.confirmPassword) {
+      this.errorMsg = this.errorMessages['passwordMismatch'];
       return;
     }
 
-    this.mismatchError = false;
-    this.errorMsg = null;
-
-    const payload: RegisterPayload = { password, ...rest };
-
+    const { confirmPassword, ...payload } = value;
     this.auth.register(payload).subscribe({
-      next: () => {
-        // success logic here (redirect, toast, reset, etc.)
-      },
+      next: () => this.router.navigate(['/login']),
       error: (err) => {
         this.errorMsg =
           err.error?.message || 'Registration failed. Please try again.';

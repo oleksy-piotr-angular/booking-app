@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { environment } from '../../../../../../environments/environment';
 export interface RegisterPayload {
+  name: string;
   email: string;
   password: string;
 }

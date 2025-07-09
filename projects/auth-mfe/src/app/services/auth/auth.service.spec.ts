@@ -29,19 +29,24 @@ describe('AuthService (TDD)', () => {
     localStorage.clear();
   });
 
-  it('should post to /api/register and return the response', () => {
+  it('should POST to /api/register, store token & user ID, and return the response', (done) => {
     const payload = { name: 'Test User', email: 'a@b.com', password: '123456' };
-    const mockResp = { success: true, userId: 42 };
+    const mockResp = { id: 42, token: 'jwt.abc.123' };
 
-    let actual: any;
-    service.register(payload).subscribe((res) => (actual = res));
+    service.register(payload).subscribe((res) => {
+      // 1) method returns the raw response
+      expect(res).toEqual(mockResp);
+
+      // 2) token and user ID were saved
+      expect(localStorage.getItem(TOKEN_KEY)).toBe(mockResp.token);
+      expect(localStorage.getItem(USER_ID_KEY)).toBe(String(mockResp.id));
+      done();
+    });
 
     const req = httpMock.expectOne(`${environment.apiBase}/register`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(payload);
-
     req.flush(mockResp);
-    expect(actual).toEqual(mockResp);
   });
 
   it('should POST to /api/login, store token and user ID', (done) => {

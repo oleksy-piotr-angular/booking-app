@@ -1,4 +1,4 @@
-import { mapLoginDtoToAuthToken } from '../mappers/auth.mapper';
+import { mapLoginDtoToAuthToken } from './auth.mapper';
 import { LoginResponseDto } from '../dtos/auth.dto';
 
 describe('auth.mapper', () => {

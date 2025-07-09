@@ -13,7 +13,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "run:all": "node node_modules/@angular-architects/module-federation/src/server/mf-dev-server.js",
-    "mock-auth": "node backend/mock-auth.js"
+    "mock-auth": "node backend/mock-auth.js",
+    "mock-auth:persist": "cross-env PERSIST_DB=true npm run mock-auth"
   },
   "private": true,
   "dependencies": {

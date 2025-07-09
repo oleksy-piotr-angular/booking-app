@@ -42,4 +42,4 @@ testem.log
 Thumbs.db
 
 # Mock db
-backend/db.json
+/backend/db.json

@@ -27,8 +27,8 @@ describe('NavbarComponent (TDD)', () => {
         RouterModule.forRoot([]), // <-- brings in routerLink directives
         MatToolbarModule,
         MatButtonModule,
+        NavbarComponent, // <-- imports the NavbarComponent
       ],
-      declarations: [NavbarComponent],
       providers: [
         provideLocationMocks(), // mocks Location+LocationStrategy
         { provide: AUTH_MFE_SERVICE, useValue: authSpy },

@@ -1,3 +1,4 @@
+// auth.mapper.spec.ts
 import { mapLoginDtoToAuthToken } from './auth.mapper';
 import { LoginResponseDto } from '../dtos/auth.dto';
 

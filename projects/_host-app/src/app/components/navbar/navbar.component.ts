@@ -1,3 +1,4 @@
+// navbar.component.ts
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AUTH_MFE_SERVICE, IAuthService } from '../../tokens/auth.token';

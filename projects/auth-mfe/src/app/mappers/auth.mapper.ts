@@ -1,3 +1,4 @@
+// auth.mapper.ts
 import { LoginResponseDto } from '../dtos/auth.dto';
 import { AuthToken } from '../models/auth.model';
 

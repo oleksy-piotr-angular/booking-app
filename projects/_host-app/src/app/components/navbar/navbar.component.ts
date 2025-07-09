@@ -11,6 +11,15 @@ import { AsyncPipe, NgIf } from '@angular/common';
   imports: [MaterialModule, NgIf, AsyncPipe],
   template: `
     <mat-toolbar>
+      <!-- primary navigation -->
+      <button mat-button routerLink="/">Home</button>
+      <button mat-button routerLink="/hotel/1">🏨 Hotel 1</button>
+      <button mat-button routerLink="/search">🔍 Search</button>
+      <button mat-button routerLink="/listings">📋 Listings</button>
+
+      <!-- spacer to push auth buttons to the right -->
+      <span class="spacer"></span>
+
       <button
         mat-button
         *ngIf="!(auth.isAuthenticated$ | async)"
@@ -35,6 +44,13 @@ import { AsyncPipe, NgIf } from '@angular/common';
       </button>
     </mat-toolbar>
   `,
+  styles: [
+    `
+      .spacer {
+        flex: 1 1 auto;
+      }
+    `,
+  ],
 })
 export class NavbarComponent {
   private router: Router = inject(Router);

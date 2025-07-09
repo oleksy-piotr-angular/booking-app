@@ -3,7 +3,8 @@ import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Router, UrlTree, Route, UrlSegment } from '@angular/router';
 import { of, isObservable, from, Observable } from 'rxjs';
 
-import { hostAuthGuard, AUTH_MFE_SERVICE } from './host-auth.guard';
+import { hostAuthGuard } from './host-auth.guard';
+import { AUTH_MFE_SERVICE } from '../tokens/auth.token';
 
 describe('hostAuthGuard (unit)', () => {
   let routerSpy: jasmine.SpyObj<Router>;

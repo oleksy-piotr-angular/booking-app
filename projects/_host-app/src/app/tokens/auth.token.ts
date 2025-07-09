@@ -6,4 +6,6 @@ export interface IAuthService {
   logout(): void;
 }
 
-export const AUTH_SERVICE = new InjectionToken<IAuthService>('AUTH_SERVICE');
+export const AUTH_MFE_SERVICE = new InjectionToken<IAuthService>(
+  'AUTH_MFE_SERVICE'
+);

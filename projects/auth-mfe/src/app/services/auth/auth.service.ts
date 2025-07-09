@@ -3,6 +3,10 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { environment } from '../../../../../../environments/environment';
+import { mapLoginDtoToAuthToken } from '../../mappers/auth.mapper';
+import { LoginResponseDto } from '../../dtos/auth.dto';
+import { AuthToken } from '../../models/auth.model';
+
 export interface RegisterPayload {
   name: string;
   email: string;
@@ -35,24 +39,21 @@ export class AuthService {
   );
 
   /** register AND auto‐login by storing token & user ID */
-  public register(
-    payload: RegisterPayload
-  ): Observable<{ id: number; token: string }> {
+  public register(payload: RegisterPayload): Observable<AuthToken> {
     return this.http
-      .post<{ id: number; token: string }>(`${this.baseUrl}/register`, payload)
-      .pipe(tap((resp) => this.setToken({ id: resp.id, token: resp.token })));
+      .post<LoginResponseDto>(`${this.baseUrl}/register`, payload)
+      .pipe(
+        // 1) map the server response to our internal shape
+        map(mapLoginDtoToAuthToken),
+        // 2) auto-save that token & id
+        tap(this.setToken.bind(this))
+      );
   }
 
-  public login(
-    payload: LoginPayload
-  ): Observable<{ id: number; token: string }> {
+  public login(payload: LoginPayload): Observable<AuthToken> {
     return this.http
-      .post<{ id: number; token: string }>(`${this.baseUrl}/login`, payload)
-      .pipe(
-        tap((response) =>
-          this.setToken({ id: response.id, token: response.token })
-        )
-      );
+      .post<LoginResponseDto>(`${this.baseUrl}/login`, payload)
+      .pipe(map(mapLoginDtoToAuthToken), tap(this.setToken.bind(this)));
   }
 
   public forgotPassword(email: string): Observable<any> {

@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { BehaviorSubject } from 'rxjs';
 
 import { NavbarComponent } from './navbar.component';
-import { AUTH_SERVICE, IAuthService } from '../../tokens/auth.token';
+import { AUTH_MFE_SERVICE, IAuthService } from '../../tokens/auth.token';
 
 describe('NavbarComponent (TDD)', () => {
   let fixture: ComponentFixture<NavbarComponent>;
@@ -31,7 +31,7 @@ describe('NavbarComponent (TDD)', () => {
       declarations: [NavbarComponent],
       providers: [
         provideLocationMocks(), // mocks Location+LocationStrategy
-        { provide: AUTH_SERVICE, useValue: authSpy },
+        { provide: AUTH_MFE_SERVICE, useValue: authSpy },
       ],
     }).compileComponents();
 

@@ -86,15 +86,14 @@ app.post('/api/register', (req, res) => {
 
   db.users.push(newUser);
 
-  + // only persist to disk when flag is on
-+ if (ENABLE_PERSISTENCE) {
-+   fs.writeFileSync(
-+     DB_PATH,
-+     JSON.stringify(db, null, 2),
-+     'utf8'
-+   );
-+ }
-
+  // only persist to disk when flag is on
+  if (ENABLE_PERSISTENCE) {
+    fs.writeFileSync(
+      DB_PATH,
+      JSON.stringify(db, null, 2),
+      'utf8'
+   );
+ }
   const token = jwt.sign({ sub: newUser.id, email: newUser.email }, SECRET, { expiresIn: '1h' });
   res.status(201).json({ accessToken: token, user: { id: newUser.id, email: newUser.email } });
 });

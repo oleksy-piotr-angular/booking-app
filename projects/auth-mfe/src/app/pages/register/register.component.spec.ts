@@ -6,22 +6,27 @@ import { of } from 'rxjs';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 import { RegisterComponent } from './register.component';
 import { AuthService } from '../../services/auth/auth.service';
+import { Router } from '@angular/router';
 
 describe('RegisterComponent (TDD)', () => {
   let fixture: ComponentFixture<RegisterComponent>;
   let component: RegisterComponent;
   let authSpy: jasmine.SpyObj<AuthService>;
+  let routerSpy: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
     authSpy = jasmine.createSpyObj('AuthService', ['register']);
     // our mock server returns { accessToken, user }, but tests only care that register() was called
-    authSpy.register.and.returnValue(
-      of({ accessToken: 'tkn', user: { id: 42, email: 'x@y.com' } })
-    );
+    authSpy.register.and.returnValue(of({ id: 42, token: 'tkn' }));
+
+    routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
       imports: [RegisterComponent, NoopAnimationsModule],
-      providers: [{ provide: AuthService, useValue: authSpy }],
+      providers: [
+        { provide: AuthService, useValue: authSpy },
+        { provide: Router, useValue: routerSpy },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RegisterComponent);
@@ -95,5 +100,27 @@ describe('RegisterComponent (TDD)', () => {
     const matError =
       fixture.nativeElement.querySelector('mat-error').textContent;
     expect(matError).toContain('Passwords do not match');
+  });
+
+  it('should auto-login and redirect to home on successful register', () => {
+    const dyn = fixture.debugElement.query(By.directive(DynamicFormComponent))
+      .componentInstance as DynamicFormComponent;
+
+    const formValue = {
+      name: 'Test User',
+      email: 'x@y.com',
+      password: 'secret1',
+      confirmPassword: 'secret1',
+    };
+
+    dyn.submitted.emit(formValue);
+
+    expect(authSpy.register).toHaveBeenCalledWith({
+      name: 'Test User',
+      email: 'x@y.com',
+      password: 'secret1',
+    });
+
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['/']);
   });
 });

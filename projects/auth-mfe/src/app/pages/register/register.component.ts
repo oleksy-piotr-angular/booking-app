@@ -81,7 +81,7 @@ export class RegisterComponent {
 
     const { confirmPassword, ...payload } = value;
     this.auth.register(payload).subscribe({
-      next: () => this.router.navigate(['/login']),
+      next: () => this.router.navigate(['/']),
       error: (err) => {
         this.errorMsg =
           err.error?.message || 'Registration failed. Please try again.';

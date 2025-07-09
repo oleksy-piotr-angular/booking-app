@@ -12,6 +12,7 @@ import { ProfileComponent } from '../../../auth-mfe/src/app/pages/profile/profil
 describe('AppComponent (modern routing)', () => {
   // a fake profile so ProfileComponent will render without real HTTP
   const mockProfile: UserProfile = {
+    id: 1,
     name: 'Piotr',
     email: 'piotr@example.com',
   };

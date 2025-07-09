@@ -1,17 +1,19 @@
 // auth.guard.ts
 import { inject } from '@angular/core';
 import { CanActivateFn, Router, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AuthService } from '../services/auth/auth.service';
+import {
+  AUTH_MFE_SERVICE,
+  IAuthService,
+} from '../../../../_host-app/src/app/tokens/auth.token';
 
-const LOGIN_ROUTE = ['/login'];
-
-export const authGuard: CanActivateFn = (): Observable<boolean | UrlTree> => {
-  const auth = inject(AuthService);
+export const authGuard: CanActivateFn = (route, state) => {
+  const auth = inject(AUTH_MFE_SERVICE) as IAuthService;
   const router = inject(Router);
 
   return auth.isAuthenticated$.pipe(
-    map((isAuth) => (isAuth ? true : router.createUrlTree(LOGIN_ROUTE)))
+    map((isAuth) =>
+      isAuth ? true : (router.createUrlTree(['/login']) as UrlTree)
+    )
   );
 };

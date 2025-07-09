@@ -34,8 +34,13 @@ export class AuthService {
     map((token) => !!token)
   );
 
-  public register(payload: RegisterPayload): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/register`, payload);
+  /** register AND auto‐login by storing token & user ID */
+  public register(
+    payload: RegisterPayload
+  ): Observable<{ id: number; token: string }> {
+    return this.http
+      .post<{ id: number; token: string }>(`${this.baseUrl}/register`, payload)
+      .pipe(tap((resp) => this.setToken({ id: resp.id, token: resp.token })));
   }
 
   public login(

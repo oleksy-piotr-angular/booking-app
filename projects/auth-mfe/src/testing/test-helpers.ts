@@ -1,16 +1,30 @@
 // test-helpers.ts
 import { Provider } from '@angular/core';
 import { of } from 'rxjs';
-import { AuthService } from '../app/services/auth/auth.service';
 import { Router } from '@angular/router';
+import {
+  AUTH_MFE_SERVICE,
+  IAuthService,
+} from '../../../_host-app/src/app/tokens/auth.token';
 
 export const createRouterSpy = () =>
   jasmine.createSpyObj('Router', ['createUrlTree']);
 
-export const provideMockAuthService = (isAuth: boolean): Provider => ({
-  provide: AuthService,
-  useValue: { isAuthenticated$: of(isAuth) },
-});
+/**
+ * Returns a provider that
+ *  • binds the AUTH_MFE_SERVICE token to a spy impl of IAuthService
+ *  • sets isAuthenticated$ to the given boolean
+ */
+export function provideMockAuthService(isAuth: boolean): Provider {
+  const spy = jasmine.createSpyObj<IAuthService>('IAuthService', ['logout'], {
+    isAuthenticated$: of(isAuth),
+  });
+
+  return {
+    provide: AUTH_MFE_SERVICE,
+    useValue: spy,
+  };
+}
 
 export const provideMockRouter = (
   routerSpy: jasmine.SpyObj<Router>

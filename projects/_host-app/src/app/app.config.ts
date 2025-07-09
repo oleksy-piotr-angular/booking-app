@@ -8,7 +8,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { HOST_ROUTES } from './host.routes';
 import { HttpClientModule } from '@angular/common/http';
-import { AUTH_MFE_SERVICE } from './guards/host-auth.guard';
+import { AUTH_MFE_SERVICE } from './tokens/auth.token';
 import { AuthService } from '../../../auth-mfe/src/app/services/auth/auth.service';
 
 export const appConfig: ApplicationConfig = {

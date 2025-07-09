@@ -6,6 +6,7 @@ import {
 } from '@angular/common/http/testing';
 import { AuthService, UserProfile } from './auth.service';
 import { environment } from '../../../../../../environments/environment';
+import { LoginResponseDto, RegisterResponseDto } from '../../dtos/auth.dto';
 
 describe('AuthService (TDD)', () => {
   let service: AuthService;
@@ -31,15 +32,21 @@ describe('AuthService (TDD)', () => {
 
   it('should POST to /api/register, store token & user ID, and return the response', (done) => {
     const payload = { name: 'Test User', email: 'a@b.com', password: '123456' };
-    const mockResp = { id: 42, token: 'jwt.abc.123' };
+    const mockResp: RegisterResponseDto = {
+      accessToken: 'jwt.abc.123',
+      user: { id: 7, email: 'me@a.com' },
+    };
 
     service.register(payload).subscribe((res) => {
-      // 1) method returns the raw response
-      expect(res).toEqual(mockResp);
+      // 1) method returns the AuthToken shape
+      expect(res).toEqual({
+        id: mockResp.user.id,
+        token: mockResp.accessToken,
+      });
 
       // 2) token and user ID were saved
-      expect(localStorage.getItem(TOKEN_KEY)).toBe(mockResp.token);
-      expect(localStorage.getItem(USER_ID_KEY)).toBe(String(mockResp.id));
+      expect(localStorage.getItem(TOKEN_KEY)).toBe(mockResp.accessToken);
+      expect(localStorage.getItem(USER_ID_KEY)).toBe(String(mockResp.user.id));
       done();
     });
 
@@ -51,11 +58,14 @@ describe('AuthService (TDD)', () => {
 
   it('should POST to /api/login, store token and user ID', (done) => {
     const payload = { name: 'Test User', email: 'me@a.com', password: 'abc' };
-    const mockResp = { id: 7, token: 'jwt.abc.123' };
+    const mockResp: LoginResponseDto = {
+      accessToken: 'jwt.abc.123',
+      user: { id: 7, email: 'me@a.com' },
+    };
 
     service.login(payload).subscribe(() => {
-      expect(localStorage.getItem(TOKEN_KEY)).toEqual(mockResp.token);
-      expect(localStorage.getItem(USER_ID_KEY)).toBe(String(mockResp.id));
+      expect(localStorage.getItem(TOKEN_KEY)).toEqual(mockResp.accessToken);
+      expect(localStorage.getItem(USER_ID_KEY)).toBe(String(mockResp.user.id));
       done();
     });
 

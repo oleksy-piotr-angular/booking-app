@@ -37,7 +37,7 @@ export class LoginComponent {
   public onSubmit(value: LoginPayload): void {
     this.errorMsg = null;
     this.auth.login(value).subscribe({
-      next: () => this.router.navigate(['/dashboard']),
+      next: () => this.router.navigate(['/auth/profile']),
       error: (err) => {
         this.errorMsg = err.error?.message || 'Login failed';
       },

@@ -60,7 +60,7 @@ describe('LoginComponent (TDD)', () => {
     dyn.submitted.emit(payload);
 
     expect(authSpy.login).toHaveBeenCalledWith(payload);
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/dashboard']);
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['/auth/profile']);
   });
 
   it('displays an error message when login fails', fakeAsync(() => {

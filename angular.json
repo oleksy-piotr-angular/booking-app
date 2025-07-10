@@ -497,6 +497,36 @@
           }
         }
       }
+    },
+    "auth-token": {
+      "projectType": "library",
+      "root": "libs/auth-token",
+      "sourceRoot": "libs/auth-token/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "libs/auth-token/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/auth-token/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "libs/auth-token/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "libs/auth-token/tsconfig.spec.json",
+            "polyfills": ["zone.js", "zone.js/testing"]
+          }
+        }
+      }
     }
   }
 }

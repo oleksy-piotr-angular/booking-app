@@ -8,6 +8,25 @@ import {
   UserProfile,
 } from '../../../auth-mfe/src/app/services/auth/auth.service';
 import { ProfileComponent } from '../../../auth-mfe/src/app/pages/profile/profile.component';
+import { AUTH_MFE_SERVICE, IAuthService } from '../app/tokens/auth.token';
+import { HttpClientModule } from '@angular/common/http';
+
+class StubAuthService {
+  getUserId(): number {
+    return 1;
+  }
+
+  getProfile() {
+    return of({
+      id: 1,
+      name: 'Piotr',
+      email: 'piotr@example.com',
+    });
+  }
+
+  isAuthenticated$ = of(true);
+  logout(): void {}
+}
 
 describe('AppComponent (modern routing)', () => {
   // a fake profile so ProfileComponent will render without real HTTP
@@ -19,15 +38,11 @@ describe('AppComponent (modern routing)', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent, ProfileComponent],
+      imports: [AppComponent, ProfileComponent, HttpClientModule],
       providers: [
         provideRouter([{ path: 'auth/profile', component: ProfileComponent }]),
-        {
-          provide: AuthService,
-          useValue: {
-            getProfile: () => of(mockProfile),
-          },
-        },
+        { provide: AUTH_MFE_SERVICE, useExisting: AuthService }, // connects token to service
+        { provide: AuthService, useClass: StubAuthService }, // provides stub
       ],
     }).compileComponents();
   });
@@ -41,7 +56,7 @@ describe('AppComponent (modern routing)', () => {
     const fixture = TestBed.createComponent(AppComponent);
 
     // 🔄 Update to whatever your component actually sets:
-    expect(fixture.componentInstance.title).toEqual('Booking App - Host'); // was 'host-app'
+    expect(fixture.componentInstance.title).toEqual('Booking App - DEMO');
   });
 
   it('should render the title in an h1', () => {
@@ -50,7 +65,7 @@ describe('AppComponent (modern routing)', () => {
     const h1 = fixture.nativeElement.querySelector('h1')!.textContent!;
 
     // 🔄 Update to match your template text:
-    expect(h1).toContain('Booking App - Host'); // was 'Host App'
+    expect(h1).toContain('Booking App - DEMO');
   });
 
   it('should render ProfileComponent via federated route', async () => {

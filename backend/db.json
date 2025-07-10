@@ -14,7 +14,7 @@
     },
     {
       "id": 3,
-      "email": "alice@example.com",
+      "email": "user1@example.com",
       "password": "supersecret",
       "name": "Alice Tester"
     }

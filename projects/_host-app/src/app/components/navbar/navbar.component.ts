@@ -14,7 +14,7 @@ import { RouterModule } from '@angular/router';
     <mat-toolbar>
       <ng-container *ngIf="auth.isAuthenticated$ | async">
         <!-- primary navigation -->
-        <a mat-button [routerLink]="['/path']">Profile</a>
+        <a mat-button [routerLink]="['/auth/profile']">👤 Profile</a>
         <a mat-button [routerLink]="['/hotel', 1]">🏨 Hotel 1</a>
         <a mat-button [routerLink]="['/search']">🔍 Search</a>
         <a mat-button [routerLink]="['/listings']">📋 Listings</a>

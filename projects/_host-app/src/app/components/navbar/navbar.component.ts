@@ -4,21 +4,24 @@ import { Router } from '@angular/router';
 import { AUTH_MFE_SERVICE, IAuthService } from '../../tokens/auth.token';
 import { MaterialModule } from '../../shared/material.module';
 import { AsyncPipe, NgIf } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [MaterialModule, NgIf, AsyncPipe],
+  imports: [MaterialModule, NgIf, AsyncPipe, RouterModule],
   template: `
     <mat-toolbar>
-      <!-- primary navigation -->
-      <button mat-button routerLink="/">Home</button>
-      <button mat-button routerLink="/hotel/1">🏨 Hotel 1</button>
-      <button mat-button routerLink="/search">🔍 Search</button>
-      <button mat-button routerLink="/listings">📋 Listings</button>
+      <ng-container *ngIf="auth.isAuthenticated$ | async">
+        <!-- primary navigation -->
+        <a mat-button [routerLink]="['/path']">Profile</a>
+        <a mat-button [routerLink]="['/hotel', 1]">🏨 Hotel 1</a>
+        <a mat-button [routerLink]="['/search']">🔍 Search</a>
+        <a mat-button [routerLink]="['/listings']">📋 Listings</a>
 
-      <!-- spacer to push auth buttons to the right -->
-      <span class="spacer"></span>
+        <!-- spacer to push auth buttons to the right -->
+        <span class="spacer"></span>
+      </ng-container>
 
       <button
         mat-button

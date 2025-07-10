@@ -2,10 +2,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router, UrlTree } from '@angular/router';
 import { map } from 'rxjs/operators';
-import {
-  AUTH_MFE_SERVICE,
-  IAuthService,
-} from '../../../../_host-app/src/app/tokens/auth.token';
+import { AUTH_MFE_SERVICE, IAuthService } from '@booking-app/auth-token';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const auth = inject(AUTH_MFE_SERVICE) as IAuthService;

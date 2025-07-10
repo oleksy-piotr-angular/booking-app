@@ -9,8 +9,7 @@ import {
 } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { AUTH_MFE_SERVICE, IAuthService } from '../tokens/auth.token';
-
+import { AUTH_MFE_SERVICE, IAuthService } from '@booking-app/auth-token';
 const LOGIN_PATH = ['/auth', 'login'];
 
 export const hostAuthGuard: CanMatchFn = (

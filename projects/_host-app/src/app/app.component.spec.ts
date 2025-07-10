@@ -8,7 +8,7 @@ import {
   UserProfile,
 } from '../../../auth-mfe/src/app/services/auth/auth.service';
 import { ProfileComponent } from '../../../auth-mfe/src/app/pages/profile/profile.component';
-import { AUTH_MFE_SERVICE, IAuthService } from '../app/tokens/auth.token';
+import { AUTH_MFE_SERVICE, IAuthService } from '@booking-app/auth-token';
 import { HttpClientModule } from '@angular/common/http';
 
 class StubAuthService {

@@ -2,10 +2,7 @@
 import { Provider } from '@angular/core';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
-import {
-  AUTH_MFE_SERVICE,
-  IAuthService,
-} from '../../../_host-app/src/app/tokens/auth.token';
+import { AUTH_MFE_SERVICE, IAuthService } from '@booking-app/auth-token';
 
 export const createRouterSpy = () =>
   jasmine.createSpyObj('Router', ['createUrlTree']);

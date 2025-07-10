@@ -1,7 +1,7 @@
 // navbar.component.ts
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { AUTH_MFE_SERVICE, IAuthService } from '../../tokens/auth.token';
+import { AUTH_MFE_SERVICE, IAuthService } from '@booking-app/auth-token';
 import { MaterialModule } from '../../shared/material.module';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { RouterModule } from '@angular/router';

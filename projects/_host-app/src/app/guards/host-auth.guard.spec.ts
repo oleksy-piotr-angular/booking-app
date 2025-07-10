@@ -4,7 +4,7 @@ import { Router, UrlTree, Route, UrlSegment } from '@angular/router';
 import { of, isObservable, from, Observable } from 'rxjs';
 
 import { hostAuthGuard } from './host-auth.guard';
-import { AUTH_MFE_SERVICE } from '../tokens/auth.token';
+import { AUTH_MFE_SERVICE } from '@booking-app/auth-token';
 
 describe('hostAuthGuard (unit)', () => {
   let routerSpy: jasmine.SpyObj<Router>;

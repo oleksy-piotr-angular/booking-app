@@ -10,7 +10,9 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { hostAuthGuard } from './guards/host-auth.guard';
 
 export const HOST_ROUTES: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', redirectTo: 'auth', pathMatch: 'full' },
+
+  { path: 'home', component: HomeComponent },
 
   // auth UI stays unguarded
   {

@@ -9,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { BehaviorSubject } from 'rxjs';
 
 import { NavbarComponent } from './navbar.component';
-import { AUTH_MFE_SERVICE, IAuthService } from '../../tokens/auth.token';
+import { AUTH_MFE_SERVICE, IAuthService } from '@booking-app/auth-token';
 
 describe('NavbarComponent (TDD)', () => {
   let fixture: ComponentFixture<NavbarComponent>;

@@ -1,5 +1,5 @@
 // app.config.ts
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { ApplicationConfig } from '@angular/core';
 import {
   provideRouter,
   withEnabledBlockingInitialNavigation,
@@ -7,14 +7,18 @@ import {
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { HOST_ROUTES } from './host.routes';
-import { HttpClientModule } from '@angular/common/http';
-import { AUTH_MFE_SERVICE } from './tokens/auth.token';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { AUTH_MFE_SERVICE } from '@booking-app/auth-token';
 import { AuthService } from '../../../auth-mfe/src/app/services/auth/auth.service';
+import { authInterceptor } from 'projects/auth-mfe/src/app/interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
-    importProvidersFrom(HttpClientModule), // HTTP so AuthService can work
+    provideHttpClient(
+      //
+      withInterceptors([authInterceptor])
+    ), // HTTP so AuthService can work
     provideRouter(HOST_ROUTES, withEnabledBlockingInitialNavigation()),
     { provide: AUTH_MFE_SERVICE, useExisting: AuthService }, // Bind the token to the real remote class
   ],

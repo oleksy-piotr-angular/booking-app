@@ -13,14 +13,18 @@ module.exports = withModuleFederationPlugin(
         strictVersion: true,
         requiredVersion: 'auto'
       }),
-
       //explicitly share the remote entry point(s)
       //so host and auth-mfe share the same AuthService instance
-    'auth-mfe': {
+      'auth-mfe': {
+        singleton: true,
+        strictVersion: false, // or true if you publish with matching versions
+        eager: false          // lazy‐load the remote
+      },
+      '@booking-app/auth-token': {
       singleton: true,
-      strictVersion: false, // or true if you publish with matching versions
-      eager: false          // lazy‐load the remote
-    }
+      strictVersion: true,
+      requiredVersion: 'auto'
+      },
     }
   },
   // second arg let mutate the full Webpack config

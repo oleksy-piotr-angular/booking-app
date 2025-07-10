@@ -14,7 +14,12 @@ module.exports = withModuleFederationPlugin(
         singleton: true,
         strictVersion: true,
         requiredVersion: 'auto'
-      })
+      }),
+      '@booking-app/auth-token': {
+        singleton: true,
+        strictVersion: true,
+        requiredVersion: 'auto'
+      },
     }
   },
 

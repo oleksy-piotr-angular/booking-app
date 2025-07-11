@@ -33,5 +33,4 @@ export const AUTH_ROUTES: Routes = [
     component: ProfileComponent,
     canActivate: [authGuard],
   },
-  { path: '**', redirectTo: 'login' },
 ];

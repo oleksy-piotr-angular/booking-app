@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'listingsMfe',
+  name: 'listings-mfe',
   library: { type: 'module' },
   filename: 'listingsRemoteEntry.js',
   exposes: {

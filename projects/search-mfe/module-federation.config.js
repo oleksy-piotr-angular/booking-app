@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'searchMfe',
+  name: 'search-mfe',
   library: { type: 'module' },
   // custom filename:
   filename: 'searchRemoteEntry.js',

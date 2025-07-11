@@ -1,39 +1,77 @@
 // auth.interceptor.spec.ts
 import { TestBed } from '@angular/core/testing';
 import {
-  HttpClient,
-  provideHttpClient,
-  withInterceptors,
-} from '@angular/common/http';
-import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { TOKEN_MFE_SERVICE } from '@booking-app/auth-token';
+import {
+  HttpClient,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HTTP_INTERCEPTORS,
+} from '@angular/common/http';
+
+import { ITokenService, TOKEN_MFE_SERVICE } from '@booking-app/auth-token';
 import { authInterceptor } from './auth.interceptor';
 
-describe('authInterceptor (function)[TDD]', () => {
+// 1) Adapter class so Angular sees a valid HttpInterceptor
+class AuthInterceptorAdapter implements HttpInterceptor {
+  intercept(req: HttpRequest<unknown>, next: HttpHandler) {
+    return authInterceptor(req, next.handle.bind(next));
+  }
+}
+
+describe('authInterceptor (wrapped)', () => {
   let http: HttpClient;
   let httpMock: HttpTestingController;
-  const fakeToken = 'F00';
+  let fakeTokenSvc: jasmine.SpyObj<ITokenService>;
 
   beforeEach(() => {
+    fakeTokenSvc = jasmine.createSpyObj('ITokenService', ['getToken']);
     TestBed.configureTestingModule({
-      providers: [
-        { provide: TOKEN_MFE_SERVICE, useValue: { getToken: () => fakeToken } },
-      ],
       imports: [HttpClientTestingModule],
+      providers: [
+        // 2) Register our adapter as an interceptor
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: AuthInterceptorAdapter,
+          multi: true,
+        },
+        // 3) Stub the token service
+        {
+          provide: TOKEN_MFE_SERVICE,
+          useValue: fakeTokenSvc,
+        },
+      ],
     });
 
     http = TestBed.inject(HttpClient);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
-  it('adds Authorization header with token', () => {
-    http.get('/test').subscribe();
-    const req = httpMock.expectOne((r) => r.url.endsWith('/test'));
+  afterEach(() => {
+    httpMock.verify();
+  });
 
-    expect(req.request.headers.get('Authorization')).toBe('Bearer test-token');
+  it('does NOT add Authorization header when token is null', () => {
+    fakeTokenSvc.getToken.and.returnValue(null);
+
+    http.get('/foo').subscribe();
+    const req = httpMock.expectOne('/foo');
+
+    expect(req.request.headers.has('Authorization')).toBeFalse();
+    req.flush({});
+  });
+
+  it('adds Bearer header when token is present', () => {
+    const tk = 'my-jwt';
+    fakeTokenSvc.getToken.and.returnValue(tk);
+
+    http.get('/foo').subscribe();
+    const req = httpMock.expectOne('/foo');
+
+    expect(req.request.headers.get('Authorization')).toBe(`Bearer ${tk}`);
     req.flush({});
   });
 });

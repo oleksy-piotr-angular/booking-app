@@ -1,27 +1,16 @@
 // host-auth.guard.ts
-import { inject, InjectionToken } from '@angular/core';
-import {
-  CanMatchFn,
-  Route,
-  UrlSegment,
-  UrlTree,
-  Router,
-} from '@angular/router';
+import { CanMatchFn, Router, UrlTree } from '@angular/router';
+import { inject } from '@angular/core';
+import { IAuthService, AUTH_MFE_SERVICE } from '@booking-app/auth-token';
 import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { AUTH_MFE_SERVICE, IAuthService } from '@booking-app/auth-token';
-const LOGIN_PATH = ['/auth', 'login'];
 
-export const hostAuthGuard: CanMatchFn = (
-  _route: Route,
-  _segments: UrlSegment[]
-): Observable<boolean | UrlTree> => {
-  // inject the token — at runtime you will bind it to the real class,
-  // in tests we will bind it to a stub
-  const auth: IAuthService = inject(AUTH_MFE_SERVICE);
-  const router: Router = inject(Router);
+export const hostAuthGuard: CanMatchFn = () => {
+  const auth = inject(AUTH_MFE_SERVICE) as IAuthService;
+  const router = inject(Router);
 
   return auth.isAuthenticated$.pipe(
-    map((isAuth) => (isAuth ? true : router.createUrlTree(LOGIN_PATH)))
+    map((isAuth) =>
+      isAuth ? true : (router.createUrlTree(['/auth', 'login']) as UrlTree)
+    )
   );
 };

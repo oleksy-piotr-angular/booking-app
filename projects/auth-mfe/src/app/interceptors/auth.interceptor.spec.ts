@@ -8,26 +8,19 @@ import {
 import {
   HttpClientTestingModule,
   HttpTestingController,
-  provideHttpClientTesting,
 } from '@angular/common/http/testing';
-
+import { TOKEN_MFE_SERVICE } from '@booking-app/auth-token';
 import { authInterceptor } from './auth.interceptor';
-import { TokenService } from '../services/token/token.service';
 
 describe('authInterceptor (function)[TDD]', () => {
   let http: HttpClient;
   let httpMock: HttpTestingController;
-  let tokenSpy: jasmine.SpyObj<TokenService>;
+  const fakeToken = 'F00';
 
   beforeEach(() => {
-    tokenSpy = jasmine.createSpyObj('TokenService', ['getToken']);
-    tokenSpy.getToken.and.returnValue('test-token');
-
     TestBed.configureTestingModule({
       providers: [
-        { provide: TokenService, useValue: tokenSpy },
-        provideHttpClient(withInterceptors([authInterceptor])),
-        provideHttpClientTesting(),
+        { provide: TOKEN_MFE_SERVICE, useValue: { getToken: () => fakeToken } },
       ],
       imports: [HttpClientTestingModule],
     });

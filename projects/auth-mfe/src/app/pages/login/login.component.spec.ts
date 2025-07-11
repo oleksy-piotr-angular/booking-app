@@ -16,7 +16,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideLocationMocks } from '@angular/common/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormErrorComponent } from '../../components/form-error/form-error.component';
-import { AuthToken } from '../../models/auth.model';
+import { LoginData } from '../../models/auth.model';
 
 describe('LoginComponent (TDD)', () => {
   let fixture: ComponentFixture<LoginComponent>;
@@ -50,9 +50,9 @@ describe('LoginComponent (TDD)', () => {
 
   it('calls AuthService.login and navigates on success', () => {
     const payload: LoginPayload = { email: 'a@b.com', password: 'pw' };
-    const mockAuthToken: AuthToken = { id: 1, token: 'x' };
+    const mockLoginData: LoginData = { id: 1, token: 'x' };
 
-    authSpy.login.and.returnValue(of(mockAuthToken));
+    authSpy.login.and.returnValue(of(mockLoginData));
 
     const dyn = fixture.debugElement.query(By.directive(DynamicFormComponent))
       .componentInstance as DynamicFormComponent;

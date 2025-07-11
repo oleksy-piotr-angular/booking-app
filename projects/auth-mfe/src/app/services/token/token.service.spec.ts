@@ -20,18 +20,18 @@ describe('TokenService (TDD)', () => {
   });
 
   it('should store and retrieve a simple token', () => {
-    service.setToken({ id: 1, token: 'abc123' });
+    service.setToken('abc123');
     expect(service.getToken()).toBe('abc123');
   });
 
   it('should clear the token', () => {
-    service.setToken({ id: 1, token: 'to-remove' });
+    service.setToken('to-remove');
     service.clearToken();
     expect(service.getToken()).toBeNull();
   });
 
   it('should store and retrieve a valid (non-expired) JWT', () => {
-    service.setToken({ id: 1, token: validToken });
+    service.setToken(validToken);
     expect(service.getToken()).toBe(validToken);
   });
 

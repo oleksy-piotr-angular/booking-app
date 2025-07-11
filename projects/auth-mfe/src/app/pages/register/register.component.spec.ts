@@ -122,6 +122,6 @@ describe('RegisterComponent (TDD)', () => {
       password: 'secret1',
     });
 
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/']);
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['/profile']);
   });
 });

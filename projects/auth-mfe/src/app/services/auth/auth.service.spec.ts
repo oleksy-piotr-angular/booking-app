@@ -4,6 +4,7 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
+import { ITokenService, TOKEN_MFE_SERVICE } from '@booking-app/auth-token';
 import { AuthService, UserProfile } from './auth.service';
 import { environment } from '../../../../../../environments/environment';
 import { LoginResponseDto, RegisterResponseDto } from '../../dtos/auth.dto';
@@ -11,6 +12,12 @@ import { LoginResponseDto, RegisterResponseDto } from '../../dtos/auth.dto';
 describe('AuthService (TDD)', () => {
   let service: AuthService;
   let httpMock: HttpTestingController;
+  // simple stub: getToken won’t be used here, setToken/clearToken just spies
+  const tokenServiceStub: ITokenService = {
+    getToken: () => null,
+    setToken: jasmine.createSpy('setToken'),
+    clearToken: jasmine.createSpy('clearToken'),
+  };
 
   const TOKEN_KEY = 'auth_token';
   const USER_ID_KEY = 'auth_user_id';
@@ -19,7 +26,10 @@ describe('AuthService (TDD)', () => {
     localStorage.clear();
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [AuthService],
+      providers: [
+        AuthService,
+        { provide: TOKEN_MFE_SERVICE, useValue: tokenServiceStub },
+      ],
     });
     service = TestBed.inject(AuthService);
     httpMock = TestBed.inject(HttpTestingController);

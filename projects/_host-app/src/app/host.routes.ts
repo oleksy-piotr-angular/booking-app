@@ -20,8 +20,8 @@ export const HOST_ROUTES: Routes = [
     loadChildren: () =>
       loadRemoteModule({
         type: 'module',
-        remoteEntry: 'http://localhost:4201/authRemoteEntry.js',
-        exposedModule: './AuthRoutes',
+        remoteEntry: 'http://localhost:4201/authRemoteEntry.js', // adjust port/path as needed
+        exposedModule: './AuthRoutes', // adjust to your remote's config
       }).then((m) => m.AUTH_ROUTES),
   },
 

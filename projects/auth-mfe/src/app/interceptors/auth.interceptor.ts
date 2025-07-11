@@ -1,11 +1,12 @@
 // auth.interceptor.ts
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { TokenService } from '../services/token/token.service';
+import { ITokenService, TOKEN_MFE_SERVICE } from '@booking-app/auth-token';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const tokenService = inject(TokenService);
+  const tokenService = inject(TOKEN_MFE_SERVICE) as ITokenService;
   const token = tokenService.getToken();
+  console.log('authInterceptor token', token);
 
   if (token) {
     const cloned = req.clone({

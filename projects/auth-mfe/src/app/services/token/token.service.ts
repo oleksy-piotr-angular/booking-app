@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { isTokenExpired } from '../../shared/utils/jwt.util';
 
-const TOKEN_KEY = 'auth.token';
+const TOKEN_KEY = 'auth_token';
 
 @Injectable({ providedIn: 'root' })
 export class TokenService {

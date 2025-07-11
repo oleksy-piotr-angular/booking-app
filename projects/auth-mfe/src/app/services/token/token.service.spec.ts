@@ -42,6 +42,6 @@ describe('TokenService (TDD)', () => {
 
     const result = service.getToken();
     expect(result).toBeNull();
-    expect(localStorage.getItem('auth.token')).toBeNull();
+    expect(localStorage.getItem('auth_token')).toBeNull();
   });
 });

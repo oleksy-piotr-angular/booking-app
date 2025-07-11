@@ -6,6 +6,7 @@ import { environment } from '../../../../../../environments/environment';
 import { mapLoginDtoToAuthToken } from '../../mappers/auth.mapper';
 import { LoginResponseDto } from '../../dtos/auth.dto';
 import { AuthToken } from '../../models/auth.model';
+import { ITokenService, TOKEN_MFE_SERVICE } from '@booking-app/auth-token';
 
 export interface RegisterPayload {
   name: string;
@@ -25,6 +26,8 @@ export interface UserProfile {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  private tokenService = inject(TOKEN_MFE_SERVICE) as ITokenService;
+
   private baseUrl = environment.apiBase;
   private http: HttpClient = inject(HttpClient);
   private readonly tokenKey = 'auth_token';
@@ -46,14 +49,23 @@ export class AuthService {
         // 1) map the server response to our internal shape
         map(mapLoginDtoToAuthToken),
         // 2) auto-save that token & id
-        tap(this.setToken.bind(this))
+        tap((authToken) => {
+          this.tokenService.setToken(authToken.token);
+          this.tokenSubject.next(authToken.token);
+        })
       );
   }
 
   public login(payload: LoginPayload): Observable<AuthToken> {
     return this.http
       .post<LoginResponseDto>(`${this.baseUrl}/login`, payload)
-      .pipe(map(mapLoginDtoToAuthToken), tap(this.setToken.bind(this)));
+      .pipe(
+        map(mapLoginDtoToAuthToken),
+        tap((authToken) => {
+          this.tokenService.setToken(authToken.token);
+          this.tokenSubject.next(authToken.token);
+        })
+      );
   }
 
   public forgotPassword(email: string): Observable<any> {
@@ -68,19 +80,7 @@ export class AuthService {
   }
 
   public logout(): void {
-    this.clearToken();
-  }
-
-  public setToken({ id, token }: { id: number; token: string }): void {
-    localStorage.setItem(this.tokenKey, token);
-    localStorage.setItem(this.userIdKey, String(id));
-    this.tokenSubject.next(token);
-  }
-
-  public clearToken(): void {
-    localStorage.removeItem(this.tokenKey);
-    localStorage.removeItem(this.userIdKey);
-    this.tokenSubject.next(null);
+    this.tokenService.clearToken();
   }
 
   public getUserId(): number | null {

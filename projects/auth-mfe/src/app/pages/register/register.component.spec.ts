@@ -103,7 +103,7 @@ describe('RegisterComponent (TDD)', () => {
     expect(matError).toContain('Passwords do not match');
   });
 
-  it('should auto-login and redirect to home on successful register', () => {
+  it('should auto-login and redirect to Profile on successful register', () => {
     const dyn = fixture.debugElement.query(By.directive(DynamicFormComponent))
       .componentInstance as DynamicFormComponent;
 
@@ -122,6 +122,6 @@ describe('RegisterComponent (TDD)', () => {
       password: 'secret1',
     });
 
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/profile']);
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['/auth/profile']);
   });
 });

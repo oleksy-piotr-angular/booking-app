@@ -38,14 +38,12 @@ export class LoginComponent {
   public onSubmit(value: LoginPayload): void {
     this.errorMsg = null;
     this.auth.login(value).subscribe({
-      next: (resp) => {
-        // Save the token before redirecting or fetching profile
-        this.tokenService.setToken(resp.token); // <-- Make sure to inject TokenService!
-
+      next: () => {
         // Detect "auth-mfe" or "_host-app"
         const isMFE = window.location.port === '4201';
+        console.log('isMFE:', isMFE);
         console.log('loginPayload:', value);
-        const redirectRoute = isMFE ? '/auth/profile' : '/profile';
+        const redirectRoute = isMFE ? '/profile' : '/auth/profile';
         console.log('redirecting to', redirectRoute);
 
         //redirect to the appropriate route

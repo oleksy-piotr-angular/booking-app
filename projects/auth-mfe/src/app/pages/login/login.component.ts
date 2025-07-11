@@ -7,7 +7,6 @@ import {
 } from '../../components/dynamic-form/dynamic-form.component';
 import { AuthService, LoginPayload } from '../../services/auth/auth.service';
 import { FormErrorComponent } from '../../components/form-error/form-error.component';
-import { TokenService } from '../../services/token/token.service';
 
 @Component({
   selector: 'am-login-form',
@@ -26,7 +25,6 @@ import { TokenService } from '../../services/token/token.service';
 export class LoginComponent {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
-  private readonly tokenService = inject(TokenService);
 
   public errorMsg: string | null = null;
 

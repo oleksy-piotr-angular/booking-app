@@ -9,7 +9,6 @@ import {
 } from '../../components/dynamic-form/dynamic-form.component';
 import { AuthService, RegisterPayload } from '../../services/auth/auth.service';
 import { FormErrorComponent } from '../../components/form-error/form-error.component';
-import { TokenService } from '../../services/token/token.service';
 
 @Component({
   selector: 'am-register-form',
@@ -29,7 +28,6 @@ import { TokenService } from '../../services/token/token.service';
 export class RegisterComponent {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
-  private readonly tokenService = inject(TokenService);
 
   public errorMsg: string | null = null;
 
@@ -68,12 +66,7 @@ export class RegisterComponent {
     passwordMismatch: 'Passwords do not match.',
   };
 
-  public onSubmit(value: {
-    name: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-  }): void {
+  public onSubmit(value: RegisterPayload): void {
     this.errorMsg = null;
 
     if (value.password !== value.confirmPassword) {

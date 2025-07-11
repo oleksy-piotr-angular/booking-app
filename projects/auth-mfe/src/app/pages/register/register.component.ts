@@ -9,6 +9,7 @@ import {
 } from '../../components/dynamic-form/dynamic-form.component';
 import { AuthService, RegisterPayload } from '../../services/auth/auth.service';
 import { FormErrorComponent } from '../../components/form-error/form-error.component';
+import { TokenService } from '../../services/token/token.service';
 
 @Component({
   selector: 'am-register-form',
@@ -28,6 +29,7 @@ import { FormErrorComponent } from '../../components/form-error/form-error.compo
 export class RegisterComponent {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly tokenService = inject(TokenService);
 
   public errorMsg: string | null = null;
 
@@ -81,7 +83,19 @@ export class RegisterComponent {
 
     const { confirmPassword, ...payload } = value;
     this.auth.register(payload).subscribe({
-      next: () => this.router.navigate(['/']),
+      next: (resp) => {
+        // Save the token before redirecting or fetching profile
+        this.tokenService.setToken(resp.token); // <-- Make sure to inject TokenService!
+
+        // Detect "auth-mfe" or "_host-app"
+        const isMFE = window.location.port === '4201';
+        console.log('loginPayload:', value);
+        const redirectRoute = isMFE ? '/auth/profile' : '/profile';
+        console.log('redirecting to', redirectRoute);
+
+        //redirect to the appropriate route
+        this.router.navigate([redirectRoute]);
+      },
       error: (err) => {
         this.errorMsg =
           err.error?.message || 'Registration failed. Please try again.';

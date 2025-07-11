@@ -1,4 +1,3 @@
-import { LoginData } from '../../models/auth.model';
 // token.service.ts
 import { Injectable } from '@angular/core';
 import { isTokenExpired } from '../../shared/utils/jwt.util';

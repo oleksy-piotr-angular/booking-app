@@ -1,4 +1,4 @@
-
+// projects/auth-mfe/webpack.config.js
 const {
   withModuleFederationPlugin,
   shareAll

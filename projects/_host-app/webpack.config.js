@@ -1,3 +1,4 @@
+// projects/_host-app/webpack.config.js
 const {
   withModuleFederationPlugin,
   shareAll

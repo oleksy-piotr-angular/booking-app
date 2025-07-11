@@ -1,8 +1,10 @@
+import { LoginData } from '../../models/auth.model';
 // token.service.ts
 import { Injectable } from '@angular/core';
 import { isTokenExpired } from '../../shared/utils/jwt.util';
 
-const TOKEN_KEY = 'auth_token';
+export const TOKEN_KEY = 'auth_token';
+export const USER_ID_KEY = 'auth_user_id';
 
 @Injectable({ providedIn: 'root' })
 export class TokenService {
@@ -10,6 +12,7 @@ export class TokenService {
 
   public getToken(): string | null {
     const token = localStorage.getItem(TOKEN_KEY);
+    console.log('TokenService getToken', token);
     if (!token) {
       return null;
     }
@@ -24,6 +27,7 @@ export class TokenService {
   }
 
   public setToken(token: string): void {
+    console.log('TokenService setToken', token);
     localStorage.setItem(TOKEN_KEY, token);
   }
 

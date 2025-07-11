@@ -1,5 +1,5 @@
-import { environment } from './../../../../environments/environment';
 // app.component.ts
+import { environment } from './../../../../environments/environment';
 import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';

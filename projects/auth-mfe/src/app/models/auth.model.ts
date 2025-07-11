@@ -1,4 +1,4 @@
-// login-data.model.ts
+// auth.model.ts
 export interface LoginData {
   id: number;
   token: string;

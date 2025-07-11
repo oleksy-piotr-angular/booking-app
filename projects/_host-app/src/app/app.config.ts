@@ -5,23 +5,30 @@ import {
   withEnabledBlockingInitialNavigation,
 } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { HOST_ROUTES } from './host.routes';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+
+// shared‐token injection tokens:
 import { AUTH_MFE_SERVICE, TOKEN_MFE_SERVICE } from '@booking-app/auth-token';
-import { AuthService } from '../../../auth-mfe/src/app/services/auth/auth.service';
-import { authInterceptor } from 'projects/auth-mfe/src/app/interceptors/auth.interceptor';
-import { TokenService } from 'projects/auth-mfe/src/app/services/token/token.service';
+
+// import the remotes classes via Module Federation path:
+import { AuthService } from 'auth-mfe/AuthService';
+import { TokenService } from 'auth-mfe/TokenService';
+import { authInterceptor } from 'auth-mfe/AuthInterceptor';
+
+// import the remotes classes via Module Federation path:
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimations(),
-    provideHttpClient(
-      //
-      withInterceptors([authInterceptor])
-    ), // HTTP so AuthService can work
+    provideHttpClient(withInterceptors([authInterceptor])),
     provideRouter(HOST_ROUTES, withEnabledBlockingInitialNavigation()),
-    { provide: AUTH_MFE_SERVICE, useExisting: AuthService }, //1. Bind the token to the real remote class
-    { provide: TOKEN_MFE_SERVICE, useExisting: TokenService }, //2. Bind the token to the real remote class
+
+    // 1) bind the shared token to the remote AuthService
+    { provide: AUTH_MFE_SERVICE, useExisting: AuthService },
+
+    // 2) bind the shared token to the remote TokenService
+    { provide: TOKEN_MFE_SERVICE, useExisting: TokenService },
   ],
 };

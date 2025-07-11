@@ -7,5 +7,5 @@ module.exports = {
     './AuthService': './projects/auth-mfe/src/app/services/auth/auth.service.ts',
     './TokenService': './projects/auth-mfe/src/app/services/token/token.service.ts',
     './AuthInterceptor': './projects/auth-mfe/src/app/interceptors/auth.interceptor.ts',
-  }
+  } 
 };

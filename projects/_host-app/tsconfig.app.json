@@ -2,12 +2,20 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/app",
-    "types": []
+    "types": [],
+    "paths": {
+      // map your MF alias -> the actual source file (for TS only)
+      "auth-mfe/AuthService": [
+        "../auth-mfe/src/app/services/auth/auth.service.ts"
+      ],
+      "auth-mfe/TokenService": [
+        "../auth-mfe/src/app/services/token/token.service.ts"
+      ],
+      "auth-mfe/AuthInterceptor": [
+        "../auth-mfe/src/app/interceptors/auth.interceptor.ts"
+      ]
+    }
   },
-  "files": [
-    "src/main.ts"
-  ],
-  "include": [
-    "src/**/*.d.ts"
-  ]
+  "files": ["src/main.ts"],
+  "include": ["src/**/*.d.ts"]
 }

@@ -1,3 +1,4 @@
 // main.ts
-import('./bootstrap')
-	.catch(err => console.error(err));
+import './polyfills'; // Ensure polyfills are loaded first
+
+import('./bootstrap').catch((err) => console.error(err));

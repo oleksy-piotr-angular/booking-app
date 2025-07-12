@@ -1,14 +1,16 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "extends": "./tsconfig.app.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/spec",
     "types": ["jasmine", "node"],
+
+    // keep your shared‐lib alias here too
     "paths": {
       "@booking-app/auth-token": ["../../libs/auth-token/src/public-api.ts"]
     }
   },
-  "files": ["src/test.ts", "src/polyfills.ts"],
+  // point at your harness + let include pick up all .spec.ts
+  "files": ["src/polyfills.ts", "src/test.ts"],
   "include": ["src/**/*.spec.ts", "src/**/*.d.ts", "../../libs/**/*"],
-  "exclude": ["src/**/*.spec.ts", "src/test.ts"]
+  "exclude": [] // ← override and clear out the app excludes
 }

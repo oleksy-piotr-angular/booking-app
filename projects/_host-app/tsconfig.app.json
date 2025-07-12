@@ -1,21 +1,26 @@
+/* projects/_host-app/tsconfig.app.json */
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/app",
-    "types": [],
+    "baseUrl": "./",
     "paths": {
-      // map your MF alias -> the actual source file (for TS only)
-      "auth-mfe/AuthService": [
-        "../auth-mfe/src/app/services/auth/auth.service.ts"
-      ],
-      "auth-mfe/TokenService": [
-        "../auth-mfe/src/app/services/token/token.service.ts"
-      ],
-      "auth-mfe/AuthInterceptor": [
-        "../auth-mfe/src/app/interceptors/auth.interceptor.ts"
-      ]
-    }
+      /// wildcard for all your auth-mfe federated imports
+      "auth-mfe/*": ["../auth-mfe/src/app/*"],
+
+      // the shared token library
+      "@booking-app/auth-token": ["../../libs/auth-token/src/public-api.ts"]
+    },
+    "types": [] // no extra globals in the app build
   },
   "files": ["src/main.ts"],
-  "include": ["src/**/*.d.ts"]
+  "include": [
+    "src/**/*.ts", // your host application code
+    "src/**/*.d.ts", // any ambient declarations
+    "../../libs/**/*" // the shared lib sources
+  ],
+  "exclude": [
+    "src/**/*.spec.ts", // drop all your Jasmine tests
+    "src/test.ts" // angular's test harness
+  ]
 }

@@ -9,8 +9,13 @@ export const authGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   return auth.isAuthenticated$.pipe(
-    map((isAuth) =>
-      isAuth ? true : (router.createUrlTree(['/auth', 'login']) as UrlTree)
-    )
+    map((isAuth) => {
+      // Detect "auth-mfe" or "_host-app"
+      const isMfe = window.location.port === '4201';
+      console.log('isAuthMfe:', isMfe);
+      const redirectRoute = isMfe ? ['/login'] : ['/auth', 'login'];
+
+      return isAuth ? true : (router.createUrlTree(redirectRoute) as UrlTree);
+    })
   );
 };

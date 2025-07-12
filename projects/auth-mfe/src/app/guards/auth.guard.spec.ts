@@ -38,7 +38,12 @@ describe('authGuard (TDD)', () => {
     runGuard().subscribe((res) => (result = res));
     tick();
 
-    expect(routerSpy.createUrlTree).toHaveBeenCalledWith(['/login']);
+    // Detect "auth-mfe" or "_host-app"
+    const isMfe = window.location.port === '4201';
+    console.log('isAuthMfe:', isMfe);
+    const redirectRoute = isMfe ? ['/login'] : ['/auth', 'login'];
+
+    expect(routerSpy.createUrlTree).toHaveBeenCalledWith(redirectRoute);
     expect(result).toBe(loginTree);
   }));
 

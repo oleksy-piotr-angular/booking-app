@@ -5,5 +5,9 @@
     "types": []
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["src/test.ts", "**/*.spec.ts"]
+  "exclude": [
+    "**/*.spec.ts",
+    "src/testing/**",
+    "src/app/shared/material.module.ts" // suppress warning
+  ]
 }

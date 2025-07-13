@@ -13,11 +13,11 @@ export const REMOTES: RemoteEntry[] = [
     remoteEntry: 'http://localhost:4202/detailsRemoteEntry.js',
   },
   {
-    remoteName: 'listings-mfe',
-    remoteEntry: 'http://localhost:4203/listingsRemoteEntry.js',
+    remoteName: 'search-mfe',
+    remoteEntry: 'http://localhost:4203/searchRemoteEntry.js',
   },
   {
-    remoteName: 'search-mfe',
-    remoteEntry: 'http://localhost:4204/searchRemoteEntry.js',
+    remoteName: 'listings-mfe',
+    remoteEntry: 'http://localhost:4204/listingsRemoteEntry.js',
   },
 ];

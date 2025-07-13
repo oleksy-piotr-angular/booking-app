@@ -6,6 +6,7 @@ import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password
 import { unauthGuard } from './guards/host-unauth.guard';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { authGuard } from './guards/auth.guard';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 export const AUTH_ROUTES: Routes = [
   {
@@ -16,6 +17,11 @@ export const AUTH_ROUTES: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
+    canActivate: [unauthGuard],
+  },
+  {
+    path: 'reset-password',
+    component: ResetPasswordComponent,
     canActivate: [unauthGuard],
   },
   {

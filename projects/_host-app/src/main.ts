@@ -1,37 +1,38 @@
 // projects/_host-app/src/main.ts
+import { REMOTES } from './app/remotes';
 import './polyfills';
-import { bootstrapApplication } from '@angular/platform-browser';
-import { AppComponent } from './app/app.component';
-import { appConfig } from './app/app.config';
-import { RemoteEntry, REMOTES } from './app/remotes';
 
-// optional: setup zone-friendly federation globals
-declare const __webpack_init_sharing__: any;
-declare const __webpack_share_scopes__: any;
+declare const __webpack_init_sharing__: (scope: string) => Promise<void>;
+declare const __webpack_share_scopes__: { [scope: string]: any };
 
-async function loadRemote(r: RemoteEntry): Promise<void> {
+async function loadAllRemotes() {
+  // 1) Init the shared scope
   await __webpack_init_sharing__('default');
 
-  await new Promise<void>((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = r.remoteEntry;
-    script.type = 'module';
-    script.onload = () => resolve();
-    script.onerror = () => reject(`Failed to load ${r.remoteName}`);
-    document.head.appendChild(script);
-  });
-  const container = (window as any)[r.remoteName];
-  await container.init(__webpack_share_scopes__.default);
+  // 2) Dynamically import each remoteEntry as an ES module
+  await Promise.all(
+    REMOTES.map(async ({ remoteEntry }) => {
+      // Tell webpack to leave this URL alone at build time
+      const container = await import(/* webpackIgnore: true */ remoteEntry);
+
+      // 3) Init that remote’s share‐scope
+      await container.init(__webpack_share_scopes__['default']);
+    })
+  );
 }
 
 (async () => {
-  // inject all remotes
-  // Load all remoteEntry.js scripts in parallel
-  await Promise.all(REMOTES.map(loadRemote));
+  // Load + init all remotes first
+  await loadAllRemotes();
 
-  // now its safe to bootstrap Angular
-  // and the remotes are ready to be used
-  bootstrapApplication(AppComponent, appConfig).catch((err) =>
-    console.error(err)
-  );
+  // Then dynamically bring in Angular and your shell parts
+  const [{ bootstrapApplication }, { AppComponent }, { appConfig }] =
+    await Promise.all([
+      import('@angular/platform-browser'),
+      import('./app/app.component'),
+      import('./app/app.config'),
+    ]);
+
+  // Finally bootstrap your shell
+  bootstrapApplication(AppComponent, appConfig).catch(console.error);
 })();

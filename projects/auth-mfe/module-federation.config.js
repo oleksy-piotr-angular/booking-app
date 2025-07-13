@@ -3,7 +3,6 @@ module.exports = {
   library: { type: 'module' },
   filename: 'authRemoteEntry.js',
   exposes: {
-    './RemoteEntryModule':
-      './projects/auth-mfe/src/app/remote-entry/remote-entry.module.ts'
+    './RemoteEntryModule': './projects/auth-mfe/src/app/remote-entry/remote-entry.module.ts'
   }
 };

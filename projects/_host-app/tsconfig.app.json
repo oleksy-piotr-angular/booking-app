@@ -5,9 +5,6 @@
     "outDir": "../../out-tsc/app",
     "baseUrl": "./",
     "paths": {
-      /// wildcard for all your auth-mfe federated imports
-      "auth-mfe/*": ["../auth-mfe/src/app/*"],
-
       // the shared token library
       "@booking-app/auth-token": ["../../libs/auth-token/src/public-api.ts"]
     },

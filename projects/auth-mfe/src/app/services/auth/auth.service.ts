@@ -29,7 +29,7 @@ export interface UserProfile {
   email: string;
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class AuthService {
   private tokenService = inject(TOKEN_MFE_SERVICE) as ITokenService;
 

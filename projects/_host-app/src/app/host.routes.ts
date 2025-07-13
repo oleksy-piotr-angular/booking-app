@@ -28,8 +28,8 @@ export const HOST_ROUTES: Routes = [
       loadRemoteModule({
         remoteEntry: entry('auth-mfe'),
         remoteName: 'auth-mfe',
-        exposedModule: './AuthRoutes',
-      }).then((m) => m.AUTH_ROUTES),
+        exposedModule: './RemoteEntryModule',
+      }).then((m) => m.RemoteEntryModule.AUTH_ROUTES),
   },
 
   {

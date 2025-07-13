@@ -17,4 +17,4 @@ module.exports = withModuleFederationPlugin(
     return config;
   }
 );
-// This configuration sets up the module federation for the search micro frontend
+// This configuration sets up the module federation for the details micro frontend

@@ -1,15 +1,31 @@
 // app.component.spec.ts
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { provideRouter, Router } from '@angular/router';
 import { AppComponent } from './app.component';
-import {
-  AuthService,
-  UserProfile,
-} from '../../../auth-mfe/src/app/services/auth/auth.service';
-import { ProfileComponent } from '../../../auth-mfe/src/app/pages/profile/profile.component';
 import { AUTH_MFE_SERVICE, IAuthService } from '@booking-app/auth-token';
 import { HttpClientModule } from '@angular/common/http';
+import { Component } from '@angular/core';
+
+// Define Mock AuthService for testing
+type UserProfile = {
+  id: number;
+  name: string;
+  email: string;
+};
+
+// Define AuthService interface
+interface AuthService {
+  isAuthenticated$: Observable<boolean>;
+}
+
+// Define Mock AuthService for testing
+class AuthService {
+  isAuthenticated$: Observable<boolean> = of(false);
+}
+
+@Component({ selector: 'app-profile', template: '' })
+class MockProfileComponent {}
 
 class StubAuthService {
   getUserId(): number {
@@ -38,9 +54,11 @@ describe('AppComponent (modern routing)', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent, ProfileComponent, HttpClientModule],
+      imports: [AppComponent, MockProfileComponent, HttpClientModule],
       providers: [
-        provideRouter([{ path: 'auth/profile', component: ProfileComponent }]),
+        provideRouter([
+          { path: 'auth/profile', component: MockProfileComponent },
+        ]),
         { provide: AUTH_MFE_SERVICE, useExisting: AuthService }, // connects token to service
         { provide: AuthService, useClass: StubAuthService }, // provides stub
       ],

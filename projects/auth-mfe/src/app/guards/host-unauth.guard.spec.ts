@@ -9,7 +9,23 @@ import {
 import { of, isObservable, from, Observable } from 'rxjs';
 
 import { unauthGuard } from './host-unauth.guard';
-import { AuthService } from '../../app/services/auth/auth.service';
+
+// Define UserProfile type for testing purposes
+type UserProfile = {
+  id: number;
+  name: string;
+};
+
+// Define AuthService class for testing purposes
+class AuthService {
+  isAuthenticated$: Observable<boolean> = of(false);
+}
+
+class MockAuthService {
+  user$: Observable<UserProfile> = of({ id: 123, name: 'Test User' });
+  login() {}
+  logout() {}
+}
 
 describe('unauthGuard (TDD)', () => {
   let routerSpy: jasmine.SpyObj<Router>;

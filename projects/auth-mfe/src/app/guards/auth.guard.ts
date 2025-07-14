@@ -5,7 +5,7 @@ import { IAuthService, AUTH_MFE_SERVICE } from '@booking-app/auth-token';
 import { map } from 'rxjs/operators';
 
 export const authGuard: CanActivateFn = () => {
-  const auth = inject(AUTH_MFE_SERVICE) as IAuthService;
+  const auth = inject<IAuthService>(AUTH_MFE_SERVICE);
   const router = inject(Router);
 
   return auth.isAuthenticated$.pipe(

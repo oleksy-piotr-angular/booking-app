@@ -1,3 +1,4 @@
+// auth.interface.ts
 import { Observable } from 'rxjs';
 
 export interface IAuthService {

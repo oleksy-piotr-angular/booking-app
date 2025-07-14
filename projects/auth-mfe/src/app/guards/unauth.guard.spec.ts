@@ -1,4 +1,4 @@
-// host-unauth.guard.spec.ts
+// unauth.guard.spec.ts
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import {
   ActivatedRouteSnapshot,
@@ -9,23 +9,7 @@ import {
 import { of, isObservable, from, Observable } from 'rxjs';
 
 import { unauthGuard } from './unauth.guard';
-
-// Define UserProfile type for testing purposes
-type UserProfile = {
-  id: number;
-  name: string;
-};
-
-// Define AuthService class for testing purposes
-class AuthService {
-  isAuthenticated$: Observable<boolean> = of(false);
-}
-
-class MockAuthService {
-  user$: Observable<UserProfile> = of({ id: 123, name: 'Test User' });
-  login() {}
-  logout() {}
-}
+import { AUTH_SERVICE } from '../services/auth.tokens'; // ← import the token!
 
 describe('unauthGuard (TDD)', () => {
   let routerSpy: jasmine.SpyObj<Router>;
@@ -48,7 +32,7 @@ describe('unauthGuard (TDD)', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        { provide: AuthService, useValue: authStub },
+        { provide: AUTH_SERVICE, useValue: authStub },
         { provide: Router, useValue: routerSpy },
       ],
     });
@@ -62,7 +46,6 @@ describe('unauthGuard (TDD)', () => {
   }));
 
   it('should redirect to "/" when already authenticated', fakeAsync(() => {
-    // re-stub to emit true
     TestBed.resetTestingModule();
     routerSpy = jasmine.createSpyObj('Router', ['createUrlTree']);
     authStub = { isAuthenticated$: of(true) };
@@ -71,7 +54,7 @@ describe('unauthGuard (TDD)', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        { provide: AuthService, useValue: authStub },
+        { provide: AUTH_SERVICE, useValue: authStub },
         { provide: Router, useValue: routerSpy },
       ],
     });

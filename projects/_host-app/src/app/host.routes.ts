@@ -7,6 +7,7 @@ import { HomeComponent } from './components/home/home.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { hostAuthGuard } from './guards/host-auth.guard';
 import { RemoteEntry, REMOTES } from './remotes';
+import { AUTH_MFE_PROVIDERS } from 'projects/auth-mfe/src/app/auth-mfe.providers';
 
 type RemoteName = RemoteEntry['remoteName'];
 type RemoteEntryUrl = RemoteEntry['remoteEntry'];
@@ -24,6 +25,7 @@ export const HOST_ROUTES: Routes = [
 
   {
     path: 'auth',
+    providers: [...AUTH_MFE_PROVIDERS],
     loadChildren: () =>
       loadRemoteModule({
         remoteEntry: entry('auth-mfe'),
@@ -34,6 +36,7 @@ export const HOST_ROUTES: Routes = [
 
   {
     path: 'search',
+    providers: [...AUTH_MFE_PROVIDERS],
     canMatch: [hostAuthGuard],
     loadChildren: () =>
       loadRemoteModule({
@@ -45,6 +48,7 @@ export const HOST_ROUTES: Routes = [
 
   {
     path: 'hotel/:id',
+    providers: [...AUTH_MFE_PROVIDERS],
     canMatch: [hostAuthGuard],
     loadChildren: () =>
       loadRemoteModule({
@@ -56,6 +60,7 @@ export const HOST_ROUTES: Routes = [
 
   {
     path: 'listings',
+    providers: [...AUTH_MFE_PROVIDERS],
     canMatch: [hostAuthGuard],
     loadChildren: () =>
       loadRemoteModule({

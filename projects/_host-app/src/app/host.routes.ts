@@ -7,7 +7,7 @@ import { HomeComponent } from './components/home/home.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { hostAuthGuard } from './guards/host-auth.guard';
 import { RemoteEntry, REMOTES } from './remotes';
-import { AUTH_MFE_PROVIDERS } from 'projects/auth-mfe/src/app/auth-mfe.providers';
+import { AUTH_MFE_PROVIDERS } from 'projects/auth-mfe/src/app/remote-entry/auth-mfe.providers';
 
 type RemoteName = RemoteEntry['remoteName'];
 type RemoteEntryUrl = RemoteEntry['remoteEntry'];

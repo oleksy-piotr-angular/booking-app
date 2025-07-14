@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { AUTH_ROUTES } from '../auth.routes';
 import { AuthService } from '../services/auth/auth.service';
 import { TokenService } from '../services/token/token.service';
-import { AUTH_MFE_PROVIDERS } from 'projects/auth-mfe/src/app/auth-mfe.providers';
+import { AUTH_MFE_PROVIDERS } from 'projects/auth-mfe/src/app/remote-entry/auth-mfe.providers';
 
 @NgModule({
   imports: [CommonModule, HttpClientModule, RouterModule.forChild(AUTH_ROUTES)],

@@ -1,7 +1,7 @@
 // projects/auth-mfe/src/app/remote-entry/auth-mfe.providers.ts
 import { Provider } from '@angular/core';
-import { AuthService } from './services/auth/auth.service';
-import { TokenService } from './services/token/token.service';
+import { AuthService } from '../services/auth/auth.service';
+import { TokenService } from '../services/token/token.service';
 import { AUTH_MFE_SERVICE } from '@booking-app/auth-token';
 import { TOKEN_MFE_SERVICE } from '@booking-app/auth-token';
 

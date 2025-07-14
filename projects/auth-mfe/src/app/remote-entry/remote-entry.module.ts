@@ -6,8 +6,7 @@ import { RouterModule } from '@angular/router';
 import { AUTH_ROUTES } from '../auth.routes';
 import { AuthService } from '../services/auth/auth.service';
 import { TokenService } from '../services/token/token.service';
-import { AUTH_SERVICE } from '../services/auth.tokens';
-import { TOKEN_SERVICE } from '../services/token.tokens';
+import { AUTH_MFE_PROVIDERS } from 'projects/auth-mfe/src/app/auth-mfe.providers';
 
 @NgModule({
   imports: [CommonModule, HttpClientModule, RouterModule.forChild(AUTH_ROUTES)],
@@ -17,8 +16,7 @@ import { TOKEN_SERVICE } from '../services/token.tokens';
     TokenService,
 
     // expose them via tokens
-    { provide: AUTH_SERVICE, useExisting: AuthService },
-    { provide: TOKEN_SERVICE, useExisting: TokenService },
+    ...AUTH_MFE_PROVIDERS,
   ],
 })
 export class RemoteEntryModule {

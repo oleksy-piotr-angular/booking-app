@@ -3,31 +3,20 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { environment } from '../../../../../../environments/environment';
+
 import {
+  ITokenService,
+  LoginData,
+  LoginPayload,
+  LoginResponseDto,
   mapLoginDtoToAuthToken,
   mapRegisterDtoToAuthToken,
-} from '../../mappers/auth.mapper';
-import { LoginResponseDto } from '../../dtos/auth.dto';
-import { LoginData, RegisterData } from '../../models/auth.model';
-import { ITokenService, TOKEN_MFE_SERVICE } from '@booking-app/auth-token';
+  RegisterData,
+  RegisterPayload,
+  TOKEN_MFE_SERVICE,
+  UserProfile,
+} from '@booking-app/auth-token';
 import { TOKEN_KEY, USER_ID_KEY } from '../token/token.service';
-
-export interface RegisterPayload {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword?: string;
-}
-export interface LoginPayload {
-  email: string;
-  password: string;
-}
-
-export interface UserProfile {
-  id: number;
-  name: string;
-  email: string;
-}
 
 @Injectable()
 export class AuthService {

@@ -11,12 +11,12 @@ import { of, throwError } from 'rxjs';
 
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 import { LoginComponent } from './login.component';
-import { AuthService, LoginPayload } from '../../services/auth/auth.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideLocationMocks } from '@angular/common/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormErrorComponent } from '../../components/form-error/form-error.component';
-import { LoginData } from '../../models/auth.model';
+import { LoginData, LoginPayload } from '@booking-app/auth-token';
+import { AuthService } from '@booking-app/auth-mfe/services/auth/auth.service';
 
 describe('LoginComponent (TDD)', () => {
   let fixture: ComponentFixture<LoginComponent>;

@@ -4,12 +4,17 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import { HttpClient } from '@angular/common/http';
 
-import { AuthService, UserProfile } from './auth.service';
-import { RegisterPayload, LoginPayload } from './auth.service';
-import { LoginResponseDto, RegisterResponseDto } from '../../dtos/auth.dto';
-import { ITokenService, TOKEN_MFE_SERVICE } from '@booking-app/auth-token';
+import { AuthService } from './auth.service';
+import {
+  ITokenService,
+  LoginPayload,
+  LoginResponseDto,
+  RegisterPayload,
+  RegisterResponseDto,
+  TOKEN_MFE_SERVICE,
+  UserProfile,
+} from '@booking-app/auth-token';
 import { TOKEN_KEY, USER_ID_KEY } from '../token/token.service';
 import { environment } from '../../../../../../environments/environment';
 

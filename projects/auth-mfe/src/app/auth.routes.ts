@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
-import { unauthGuard } from './guards/host-unauth.guard';
+import { unauthGuard } from './guards/unauth.guard';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { authGuard } from './guards/auth.guard';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';

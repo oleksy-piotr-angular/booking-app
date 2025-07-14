@@ -8,7 +8,7 @@ import {
 } from '@angular/router';
 import { of, isObservable, from, Observable } from 'rxjs';
 
-import { unauthGuard } from './host-unauth.guard';
+import { unauthGuard } from './unauth.guard';
 
 // Define UserProfile type for testing purposes
 type UserProfile = {

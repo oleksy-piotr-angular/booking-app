@@ -9,7 +9,7 @@ import {
 import { of, isObservable, from, Observable } from 'rxjs';
 
 import { unauthGuard } from './unauth.guard';
-import { AUTH_SERVICE } from '../services/auth.tokens'; // ← import the token!
+import { AUTH_MFE_SERVICE } from '@booking-app/auth-token';
 
 describe('unauthGuard (TDD)', () => {
   let routerSpy: jasmine.SpyObj<Router>;
@@ -32,7 +32,7 @@ describe('unauthGuard (TDD)', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        { provide: AUTH_SERVICE, useValue: authStub },
+        { provide: AUTH_MFE_SERVICE, useValue: authStub },
         { provide: Router, useValue: routerSpy },
       ],
     });
@@ -54,7 +54,7 @@ describe('unauthGuard (TDD)', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        { provide: AUTH_SERVICE, useValue: authStub },
+        { provide: AUTH_MFE_SERVICE, useValue: authStub },
         { provide: Router, useValue: routerSpy },
       ],
     });

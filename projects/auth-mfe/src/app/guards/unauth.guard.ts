@@ -9,13 +9,13 @@ import {
 } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { AUTH_SERVICE, IAuthService } from '../services/auth.tokens';
+import { AUTH_MFE_SERVICE, IAuthService } from '@booking-app/auth-token';
 
 export const unauthGuard: CanActivateFn = (
   _route: ActivatedRouteSnapshot,
   _state: RouterStateSnapshot
 ): Observable<boolean | UrlTree> => {
-  const auth = inject<IAuthService>(AUTH_SERVICE);
+  const auth = inject<IAuthService>(AUTH_MFE_SERVICE);
   const router = inject(Router);
 
   return auth.isAuthenticated$.pipe(

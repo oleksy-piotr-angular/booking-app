@@ -3,7 +3,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@booking-app/auth-token": ["libs/auth-token/src/public-api.ts"]
+      "@booking-app/auth-token": ["libs/auth-token/src/public-api.ts"],
+      "@booking-app/auth-mfe": ["projects/auth-mfe/src/app"],
+      "@booking-app/auth-mfe/*": ["projects/auth-mfe/src/app/*"]
     },
     "outDir": "./dist/out-tsc",
     "strict": true,

@@ -1,23 +1,10 @@
-/* projects/_host-app/tsconfig.app.json */
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/app",
-    "baseUrl": "./",
-    "paths": {
-      // the shared token library
-      "@booking-app/auth-token": ["../../libs/auth-token/src/public-api.ts"]
-    },
-    "types": [] // no extra globals in the app build
+    "types": []
   },
   "files": ["src/main.ts"],
-  "include": [
-    "src/**/*.ts", // your host application code
-    "src/**/*.d.ts", // any ambient declarations
-    "../../libs/**/*" // the shared lib sources
-  ],
-  "exclude": [
-    "src/**/*.spec.ts", // drop all your Jasmine tests
-    "src/test.ts" // angular's test harness
-  ]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "../../libs/**/*"],
+  "exclude": ["src/**/*.spec.ts", "src/test.ts", "../../libs/**/*.spec.ts"]
 }

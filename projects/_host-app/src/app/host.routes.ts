@@ -1,5 +1,4 @@
 // host.routes.ts
-
 import { Routes } from '@angular/router';
 import { loadRemoteModule } from '@angular-architects/module-federation';
 
@@ -7,6 +6,7 @@ import { HomeComponent } from './components/home/home.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { hostAuthGuard } from './guards/host-auth.guard';
 import { RemoteEntry, REMOTES } from './remotes';
+
 import { AUTH_MFE_PROVIDERS } from '@booking-app/auth-mfe-providers';
 
 type RemoteName = RemoteEntry['remoteName'];

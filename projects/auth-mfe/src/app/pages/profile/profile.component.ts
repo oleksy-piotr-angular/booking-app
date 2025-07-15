@@ -2,7 +2,8 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { AuthService, UserProfile } from '../../services/auth/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { UserProfile } from '@booking-app/auth-token';
 
 @Component({
   selector: 'am-profile',

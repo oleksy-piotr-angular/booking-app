@@ -5,7 +5,8 @@ import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
 import { ProfileComponent } from './profile.component';
-import { AuthService, UserProfile } from '../../services/auth/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { UserProfile } from '@booking-app/auth-token';
 
 describe('ProfileComponent (TDD)', () => {
   let fixture: ComponentFixture<ProfileComponent>;

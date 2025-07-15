@@ -7,8 +7,9 @@ import {
   DynamicFormComponent,
   FormFieldConfig,
 } from '../../components/dynamic-form/dynamic-form.component';
-import { AuthService, RegisterPayload } from '../../services/auth/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { FormErrorComponent } from '../../components/form-error/form-error.component';
+import { RegisterPayload } from '@booking-app/auth-token';
 
 @Component({
   selector: 'am-register-form',

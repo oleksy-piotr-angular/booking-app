@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 import { DynamicFormComponent } from '../../components/dynamic-form/dynamic-form.component';
 import { RegisterComponent } from './register.component';
 import { Router } from '@angular/router';
-import { AuthService } from '@booking-app/auth-mfe/services/auth/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 describe('RegisterComponent (TDD)', () => {
   let fixture: ComponentFixture<RegisterComponent>;

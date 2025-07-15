@@ -7,7 +7,7 @@ import { HomeComponent } from './components/home/home.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { hostAuthGuard } from './guards/host-auth.guard';
 import { RemoteEntry, REMOTES } from './remotes';
-import { AUTH_MFE_PROVIDERS } from '@booking-app/auth-mfe/remote-entry/auth-mfe.providers';
+import { AUTH_MFE_PROVIDERS } from '@booking-app/auth-mfe-providers';
 
 type RemoteName = RemoteEntry['remoteName'];
 type RemoteEntryUrl = RemoteEntry['remoteEntry'];
@@ -18,6 +18,8 @@ function entry(remoteName: RemoteName): RemoteEntryUrl {
   if (!found) throw new Error(`Missing remote entry for ${remoteName}`);
   return found.remoteEntry;
 }
+
+console.log('AUTH_MFE_PROVIDERS: ', AUTH_MFE_PROVIDERS);
 
 export const HOST_ROUTES: Routes = [
   { path: '', redirectTo: 'auth', pathMatch: 'full' },

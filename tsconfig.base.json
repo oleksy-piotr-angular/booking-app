@@ -4,8 +4,9 @@
     "baseUrl": ".",
     "paths": {
       "@booking-app/auth-token": ["libs/auth-token/src/public-api.ts"],
-      "@booking-app/auth-mfe": ["projects/auth-mfe/src/app"],
-      "@booking-app/auth-mfe/*": ["projects/auth-mfe/src/app/*"]
+      "@booking-app/auth-mfe-providers": [
+        "projects/auth-mfe/src/app/remote-entry/auth-mfe.providers.ts"
+      ]
     },
     "outDir": "./dist/out-tsc",
     "strict": true,

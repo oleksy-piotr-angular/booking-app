@@ -3,13 +3,13 @@ import { ApplicationConfig } from '@angular/core';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
+import { AUTH_MFE_PROVIDERS } from '@booking-app/auth-mfe-providers';
+import { TOKEN_MFE_SERVICE } from '@booking-app/auth-token';
 
 import { AUTH_ROUTES } from './auth.routes';
 import { authInterceptor } from './interceptors/auth.interceptor';
 
-import { TOKEN_MFE_SERVICE } from '@booking-app/auth-token';
 import { TokenService } from './services/token/token.service';
-import { AUTH_MFE_PROVIDERS } from './remote-entry/auth-mfe.providers';
 
 export const appConfig: ApplicationConfig = {
   providers: [

@@ -140,7 +140,7 @@ describe('AuthService (standalone)', () => {
   });
 
   it('isAuthenticated$: true when token present at startup', (done) => {
-    localStorage.setItem(TOKEN_KEY, 'nonnull');
+    localStorage.setItem(TOKEN_KEY, 'non-null');
     // recreate service so constructor picks up new localStorage
     TestBed.resetTestingModule();
     TestBed.configureTestingModule({
